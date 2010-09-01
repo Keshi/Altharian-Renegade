@@ -1,0 +1,18 @@
+//::///////////////////////////////////////////////
+//:: FileName chk_johanstok_1
+//:://////////////////////////////////////////////
+//:://////////////////////////////////////////////
+//:: Created By: Script Wizard
+//:: Created On: 9/25/2005 9:49:17 PM
+//:://////////////////////////////////////////////
+#include "nw_i0_tool"
+
+int StartingConditional()
+{
+
+	// Make sure the PC speaker has these items in their inventory
+	if(!HasItem(GetPCSpeaker(), "johanstok_1"))
+		return FALSE;
+
+	return TRUE;
+}

@@ -1,0 +1,16 @@
+//::///////////////////////////////////////////////
+//:: FileName giv_dashdiploma
+//:://////////////////////////////////////////////
+//:://////////////////////////////////////////////
+//:: Created By: Script Wizard
+//:: Created On: 10/1/2005 12:25:32 AM
+//:://////////////////////////////////////////////
+void main()
+{
+	// Give the speaker some XP
+	GiveXPToCreature(GetPCSpeaker(), 250);
+
+	// Give the speaker the items
+	CreateItemOnObject("dashanadiploma", GetPCSpeaker(), 1);
+
+}

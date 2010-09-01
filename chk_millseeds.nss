@@ -1,0 +1,18 @@
+//::///////////////////////////////////////////////
+//:: FileName chk_millseeds
+//:://////////////////////////////////////////////
+//:://////////////////////////////////////////////
+//:: Created By: Script Wizard
+//:: Created On: 9/24/2005 11:10:35 PM
+//:://////////////////////////////////////////////
+#include "nw_i0_tool"
+
+int StartingConditional()
+{
+
+	// Make sure the PC speaker has these items in their inventory
+	if(!HasItem(GetPCSpeaker(), "millerseeds"))
+		return FALSE;
+
+	return TRUE;
+}

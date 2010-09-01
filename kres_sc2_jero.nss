@@ -1,0 +1,18 @@
+//::///////////////////////////////////////////////
+//:: FileName kres_sc2_jero
+//:://////////////////////////////////////////////
+//:://////////////////////////////////////////////
+//:: Created By: Script Wizard
+//:: Created On: 4/8/2007 8:25:32 PM
+//:://////////////////////////////////////////////
+#include "nw_i0_tool"
+
+int StartingConditional()
+{
+
+	// Make sure the PC speaker has these items in their inventory
+	if(!HasItem(GetPCSpeaker(), "kres_dragonhead"))
+		return FALSE;
+
+	return TRUE;
+}

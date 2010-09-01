@@ -1,0 +1,18 @@
+//::///////////////////////////////////////////////
+//:: Tailoring - Dye Group 13
+//:: tlr_group13.nss
+//:: Copyright (c) 2003 Jake E. Fitch
+//:://////////////////////////////////////////////
+/*
+    Sets the color group to 13.
+*/
+//:://////////////////////////////////////////////
+//:: Created By: Jake E. Fitch (Milambus Mandragon)
+//:: Created On: March 8, 2004
+//:://////////////////////////////////////////////
+#include "mg_items_inc"
+
+void main()
+{
+    ColorItem(13, COLOR_NEXT);
+}

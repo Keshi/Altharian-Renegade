@@ -1,0 +1,18 @@
+//::///////////////////////////////////////////////
+//:: Tailoring - Dye Group 11
+//:: tlr_group11.nss
+//:: Copyright (c) 2003 Jake E. Fitch
+//:://////////////////////////////////////////////
+/*
+    Sets the color group to 11.
+*/
+//:://////////////////////////////////////////////
+//:: Created By: Jake E. Fitch (Milambus Mandragon)
+//:: Created On: March 8, 2004
+//:://////////////////////////////////////////////
+#include "mg_items_inc"
+
+void main()
+{
+    ColorItem(11, COLOR_NEXT);
+}

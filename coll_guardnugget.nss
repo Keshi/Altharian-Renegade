@@ -1,0 +1,14 @@
+//::///////////////////////////////////////////////
+//:: FileName coll_swampcatgem
+//:://////////////////////////////////////////////
+//:://////////////////////////////////////////////
+//:: Created By: Script Wizard
+//:: Created On: 4/30/2006 12:51:14 AM
+//:://////////////////////////////////////////////
+void main()
+{
+    // Set the variables
+    SetLocalInt(GetPCSpeaker(), "ThanCollectValue", 10);
+    SetLocalString(GetPCSpeaker(), "CurrentItem", "i31_guardnugget");
+
+}

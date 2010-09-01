@@ -1,0 +1,18 @@
+//::///////////////////////////////////////////////
+//:: FileName kres_sc_farm05
+//:://////////////////////////////////////////////
+//:://////////////////////////////////////////////
+//:: Created By: Script Wizard
+//:: Created On: 5/26/2007 11:24:39 AM
+//:://////////////////////////////////////////////
+#include "nw_i0_tool"
+
+int StartingConditional()
+{
+
+	// Make sure the PC speaker has these items in their inventory
+	if(!HasItem(GetPCSpeaker(), "checkforit"))
+		return FALSE;
+
+	return TRUE;
+}

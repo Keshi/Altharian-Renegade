@@ -1,0 +1,18 @@
+//::///////////////////////////////////////////////
+//:: FileName chk_larsthanks
+//:://////////////////////////////////////////////
+//:://////////////////////////////////////////////
+//:: Created By: Script Wizard
+//:: Created On: 9/25/2005 9:36:24 PM
+//:://////////////////////////////////////////////
+#include "nw_i0_tool"
+
+int StartingConditional()
+{
+
+	// Make sure the PC speaker has these items in their inventory
+	if(!HasItem(GetPCSpeaker(), "larsthanks"))
+		return FALSE;
+
+	return TRUE;
+}

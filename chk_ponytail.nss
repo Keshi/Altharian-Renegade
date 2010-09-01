@@ -1,0 +1,18 @@
+//::///////////////////////////////////////////////
+//:: FileName chk_ponytail
+//:://////////////////////////////////////////////
+//:://////////////////////////////////////////////
+//:: Created By: Script Wizard
+//:: Created On: 9/24/2005 10:57:06 PM
+//:://////////////////////////////////////////////
+#include "nw_i0_tool"
+
+int StartingConditional()
+{
+
+	// Make sure the PC speaker has these items in their inventory
+	if(!HasItem(GetPCSpeaker(), "montyponytail"))
+		return FALSE;
+
+	return TRUE;
+}

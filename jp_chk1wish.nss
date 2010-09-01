@@ -1,0 +1,18 @@
+//::///////////////////////////////////////////////
+//:: FileName jp_chk1wish
+//:://////////////////////////////////////////////
+//:://////////////////////////////////////////////
+//:: Created By: Script Wizard
+//:: Created On: 1/11/2006 2:28:23 AM
+//:://////////////////////////////////////////////
+#include "nw_i0_tool"
+
+int StartingConditional()
+{
+
+	// Make sure the PC speaker has these items in their inventory
+	if(!HasItem(GetPCSpeaker(), "wish"))
+		return FALSE;
+
+	return TRUE;
+}

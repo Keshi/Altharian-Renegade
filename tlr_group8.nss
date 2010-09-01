@@ -1,0 +1,18 @@
+//::///////////////////////////////////////////////
+//:: Tailoring - Dye Group 8
+//:: tlr_group8.nss
+//:: Copyright (c) 2003 Jake E. Fitch
+//:://////////////////////////////////////////////
+/*
+    Sets the color group to 8.
+*/
+//:://////////////////////////////////////////////
+//:: Created By: Jake E. Fitch (Milambus Mandragon)
+//:: Created On: March 8, 2004
+//:://////////////////////////////////////////////
+#include "mg_items_inc"
+
+void main()
+{
+    ColorItem(8, COLOR_NEXT);
+}

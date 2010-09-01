@@ -1,0 +1,17 @@
+//::///////////////////////////////////////////////
+//:: FileName chk_gholnodeston
+//:://////////////////////////////////////////////
+//:://////////////////////////////////////////////
+//:: Created By: Script Wizard
+//:: Created On: 2/6/2005 4:54:51 PM
+//:://////////////////////////////////////////////
+#include "nw_i0_tool"
+
+int StartingConditional()
+{
+  object oPC =GetPCSpeaker();
+  int nLoot = GetLocalInt(oPC,"LootShare");
+  if (nLoot >= 1) return TRUE;
+
+  return FALSE;
+}

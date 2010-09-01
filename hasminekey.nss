@@ -1,0 +1,17 @@
+//::///////////////////////////////////////////////
+//:: FileName hasminekey
+//:://////////////////////////////////////////////
+//:://////////////////////////////////////////////
+//:: Created By: Script Wizard
+//:: Created On: 1/31/2003 10:59:31 AM
+//:://////////////////////////////////////////////
+#include "nw_i0_tool"
+
+int StartingConditional()
+{
+
+    if(!GetIsObjectValid(GetItemPossessedBy(GetPCSpeaker(), "minekey")) )
+        return FALSE;
+
+    return TRUE;
+}

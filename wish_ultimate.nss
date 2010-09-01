@@ -1,0 +1,14 @@
+//::///////////////////////////////////////////////
+//:: FileName coll_swampcatgem
+//:://////////////////////////////////////////////
+//:://////////////////////////////////////////////
+//:: Created By: Script Wizard
+//:: Created On: 4/30/2006 12:51:14 AM
+//:://////////////////////////////////////////////
+void main()
+{
+    // Set the variables
+    SetLocalString(GetPCSpeaker(), "CurrentItem", "ultimatewish");
+    SetLocalInt(GetPCSpeaker(), "WishValue",2000000);
+
+}
