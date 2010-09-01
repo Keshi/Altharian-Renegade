@@ -2,6 +2,9 @@
 /////Written by Winterknigth for Altharia///////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 
+#include "inc_utility"  // for prc_inc_util
+#include "prc_inc_util"	// for PRCForceRest()
+
 void main()
 {
   object oPC = GetItemActivator();
@@ -14,6 +17,6 @@ void main()
 
   int nDuration = 2;
   ApplyEffectToObject(DURATION_TYPE_TEMPORARY, eLink, oPC, RoundsToSeconds(nDuration));
-  ForceRest(oPC);
+  PRCForceRest(oPC);
 
 }
