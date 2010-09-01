@@ -8,7 +8,7 @@
 /////:: to the main mod from this script.  Builders are responsible to ensure
 /////:: that creature tags are correct, and that the item resref is correct.
 /////::///////////////////////////////////////////
-
+/*
 
 // Use the following format for any item drop that needs to be consistent.
 // I.e., use this one when you want the item to drop every time the creature
@@ -77,3 +77,4 @@
 
 
 }
+*/

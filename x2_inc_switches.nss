@@ -262,7 +262,7 @@ const int X2_EXECUTE_SCRIPT_END =1;
 // X2_ITEM_EVENT_ACQUIRE
 // X2_ITEM_EVENT_UNACQUIRE
 // X2_ITEM_EVENT_SPELLCAST_AT
-int SetUserDefinedItemEventNumber(int nEvent);
+void SetUserDefinedItemEventNumber(int nEvent);
 
 // Get the active User Defined Item Event
 // X2_ITEM_EVENT_ACTIVATE

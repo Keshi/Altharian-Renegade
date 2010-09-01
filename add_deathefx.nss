@@ -32,7 +32,8 @@
 
 // Otherwise, place your special effect script below.  Some sample instructions
 // are included, so that you will have a starting point.
-  if (sTag == "tag_of_creature")  //sTag is already defined in the main script.
+/* 
+ if (sTag == "tag_of_creature")  //sTag is already defined in the main script.
   {
     object oPC = GetLastKiller(); //If you plan to affect the PC, this will
                                   //help you define it.  The main script
@@ -44,7 +45,7 @@
                                   //Do not use this script for dropping items.
 
   }                               //Make sure you close your creature loop.
-
+*/
 //::////////////////////////////////////////////////////////////////////////////
 //:: How to unlock/open a door on death of the creature.
 //:: This is a handy way to get around needing keys, but still making sure that
@@ -61,7 +62,7 @@
   the time has lapses (in this case 30 minutes.) The delay is expressed in
   seconds, and must always be a float type variable.
 */
-
+/*
   if (sTag == "tag_of_creature")
   {
     object oDoor = GetObjectByTag("tag_of_door");
@@ -74,7 +75,7 @@
       DelayCommand(1800.0,SetLocalInt(OBJECT_SELF,"Triggered",0));
     }
   }
-
+*/
 //::////////////////////////////////////////////////////////////////////////////
 //:: How to spawn a chest or other object on the death of the creature.
 //:: This is useful for additional loot, or special objects, or even for
@@ -95,7 +96,7 @@
   Refer to the CreateObject command for the restrictions and usage associated
   with it.
 */
-
+/*
   if (sTag == "tag_of_creature")
   {
     location lSpawn = GetLocation(OBJECT_SELF);
@@ -118,4 +119,4 @@
 
 
 
-
+*/

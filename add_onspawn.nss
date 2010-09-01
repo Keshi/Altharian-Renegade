@@ -44,6 +44,7 @@
   nCheck value to 1, instead of 0.  Then change string sTag from "xxx" to
   the tag of the applicable area.
 */
+/*
   if (sTag == "tag_of_creature")
   {
     itemproperty ipAdd = ItemPropertyHolyAvenger();
@@ -56,7 +57,7 @@
     }
     else if (nCheck == 0) AddBonusProperty(OBJECT_SELF, ipAdd);
   }
-
+*/
 /*
   If you are trying to add a property to a creature's armor or skin, use the
   above procedure, but change the command AddBonusProperty to AddArmorProperty.
@@ -97,7 +98,7 @@
   creature are planned.  It may be easier to simply create a copy of the
   creature with a different tag, if they will be mob spawned.
 */
-
+/*
      if (sTag == "jp_minegoblin2")
   {
      object oArea = GetArea(OBJECT_SELF);
@@ -123,3 +124,4 @@
       SetName(OBJECT_SELF,"Kobold Sentry");
     }
   }
+*/
