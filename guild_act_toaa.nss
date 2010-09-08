@@ -3,7 +3,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 #include "inc_utility"  // for prc_inc_util
-#include "prc_inc_util"	// for PRCForceRest()
+#include "prc_inc_util" // for PRCForceRest()
 
 void main()
 {

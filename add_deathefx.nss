@@ -32,7 +32,7 @@
 
 // Otherwise, place your special effect script below.  Some sample instructions
 // are included, so that you will have a starting point.
-/* 
+/*
  if (sTag == "tag_of_creature")  //sTag is already defined in the main script.
   {
     object oPC = GetLastKiller(); //If you plan to affect the PC, this will

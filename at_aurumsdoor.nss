@@ -17,7 +17,7 @@ void main()
   int nXP = GetXP(oClicker);
   if (GetIsPC(oClicker))
     {
-      if (nXP == 0 & nGold < 800 & nChest == 0)
+      if (nXP == 1 & nGold < 800 & nChest == 0)
         {
           AssignCommand(oClicker,JumpToObject(oTarget));
         }
