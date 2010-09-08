@@ -32,9 +32,13 @@
 //:://////////////////////////////////////////////
 
 
-#include "X0_I0_SPELLS"
-#include "x2_i0_spells"
-#include "x2_inc_spellhook"
+//#include "X0_I0_SPELLS"
+//#include "x2_i0_spells"
+//#include "x2_inc_spellhook"
+
+// This file will now be used for item cast hellballs only.
+#include "prc_alterations"
+#include "inc_epicspells"
 #include "wk_tools"
 
 
@@ -78,8 +82,8 @@ void main()
         effect eCast = EffectVisualEffect(VFX_IMP_NEGATIVE_ENERGY);
         int nDamage5 = d6(10);
         effect eDam5 = EffectDamage(nDamage5, DAMAGE_TYPE_NEGATIVE);
-        ApplyEffectToObject(DURATION_TYPE_INSTANT, eCast, OBJECT_SELF);
-        ApplyEffectToObject(DURATION_TYPE_INSTANT, eDam5, OBJECT_SELF);
+        SPApplyEffectToObject(DURATION_TYPE_INSTANT, eCast, OBJECT_SELF);
+        SPApplyEffectToObject(DURATION_TYPE_INSTANT, eDam5, OBJECT_SELF);
     }
 
 
@@ -115,7 +119,8 @@ void main()
             nRoll = 20;
             if (GetEffectiveCasterLevel(OBJECT_SELF) > iMage) iMage = GetEffectiveCasterLevel(OBJECT_SELF);
           }
-          if(HasItem(OBJECT_SELF, "elementalorb"))
+		  // Check if the user has an elemental orb
+          if(GetIsObjectValid(GetItemPossessedBy(OBJECT_SELF, "elementalorb")))
           {
             if (iMage >= nDice) nDice = iMage;
           }
@@ -138,7 +143,7 @@ void main()
             nDamage4 = (Random(nRoll)+1)*(nDice);
 
             // no we don't care about evasion. there is no evasion to hellball
-            if (MySavingThrow(SAVING_THROW_REFLEX,oTarget,nSpellDC,SAVING_THROW_TYPE_SPELL,OBJECT_SELF,fDelay) >0)
+            if (PRCMySavingThrow(SAVING_THROW_REFLEX,oTarget,nSpellDC,SAVING_THROW_TYPE_SPELL,OBJECT_SELF,fDelay) >0)
             {
                 nDamage1 /=2;
                 nDamage2 /=2;
@@ -156,19 +161,19 @@ void main()
             {
                 if (nTotalDamage > 50)
                 {
-                    DelayCommand(fDelay+0.3f, ApplyEffectToObject(DURATION_TYPE_TEMPORARY, eKnock, oTarget,3.0f));
+                    DelayCommand(fDelay+0.3f, SPApplyEffectToObject(DURATION_TYPE_TEMPORARY, eKnock, oTarget,3.0f));
                 }
 
                 // Apply effects to the currently selected target.
-                DelayCommand(fDelay, ApplyEffectToObject(DURATION_TYPE_INSTANT, eDam1, oTarget));
-                DelayCommand(fDelay, ApplyEffectToObject(DURATION_TYPE_INSTANT, eDam2, oTarget));
-                DelayCommand(fDelay, ApplyEffectToObject(DURATION_TYPE_INSTANT, eDam3, oTarget));
-                DelayCommand(fDelay, ApplyEffectToObject(DURATION_TYPE_INSTANT, eDam4, oTarget));
+                DelayCommand(fDelay, SPApplyEffectToObject(DURATION_TYPE_INSTANT, eDam1, oTarget));
+                DelayCommand(fDelay, SPApplyEffectToObject(DURATION_TYPE_INSTANT, eDam2, oTarget));
+                DelayCommand(fDelay, SPApplyEffectToObject(DURATION_TYPE_INSTANT, eDam3, oTarget));
+                DelayCommand(fDelay, SPApplyEffectToObject(DURATION_TYPE_INSTANT, eDam4, oTarget));
                 //This visual effect is applied to the target object not the location as above.  This visual effect
                 //represents the flame that erupts on the target not on the ground.
-                DelayCommand(fDelay, ApplyEffectToObject(DURATION_TYPE_INSTANT, eVis, oTarget));
-                DelayCommand(fDelay+0.2f, ApplyEffectToObject(DURATION_TYPE_INSTANT, eVis2, oTarget));
-                DelayCommand(fDelay+0.5f, ApplyEffectToObject(DURATION_TYPE_INSTANT, eVis3, oTarget));
+                DelayCommand(fDelay, SPApplyEffectToObject(DURATION_TYPE_INSTANT, eVis, oTarget));
+                DelayCommand(fDelay+0.2f, SPApplyEffectToObject(DURATION_TYPE_INSTANT, eVis2, oTarget));
+                DelayCommand(fDelay+0.5f, SPApplyEffectToObject(DURATION_TYPE_INSTANT, eVis3, oTarget));
                 if (sMessage != "") FloatingTextStringOnCreature(sMessage,oCaster,TRUE);
              }
         }

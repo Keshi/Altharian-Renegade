@@ -12,9 +12,10 @@
 //:: Created On: Nov 18, 2002
 //:://////////////////////////////////////////////
 
-#include "x2_I0_SPELLS"
-#include "x2_inc_spellhook"
-#include "x0_I0_SPELLS"
+// 2010-9-8, Carson: May be used for certain item spells.  Modified for preliminary PRC compatibility.
+//                   We also need to move the Altharia modifications here to the PRC epic ruin spells soon.
+#include "inc_epicspells"
+#include "prc_alterations"
 #include "wk_tools"
 
 void main()
@@ -58,7 +59,7 @@ void main()
     if  (GetIsPC(oTarget)) nDam=0;
      //Set damage effect
 
-    if (MySavingThrow(SAVING_THROW_FORT,oTarget,nSpellDC,SAVING_THROW_TYPE_SPELL,OBJECT_SELF) != 0 )
+    if (PRCMySavingThrow(SAVING_THROW_FORT,oTarget,nSpellDC,SAVING_THROW_TYPE_SPELL,OBJECT_SELF) != 0 )
     {
         nDam /=2;
     }

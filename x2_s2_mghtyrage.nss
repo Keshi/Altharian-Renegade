@@ -23,9 +23,9 @@ void main()
         int nBonus = 8;
         PlayVoiceChat(VOICE_CHAT_BATTLECRY1);
         //Determine the duration by getting the con modifier after being modified
-        int nCon = 3 + GetAbilityModifier(ABILITY_CONSTITUTION) + 8;
-        effect eStr = EffectAbilityIncrease(ABILITY_CONSTITUTION, 8);
-        effect eCon = EffectAbilityIncrease(ABILITY_STRENGTH, 8);
+        int nCon = 3 + GetAbilityModifier(ABILITY_CONSTITUTION) + nBonus;
+        effect eStr = EffectAbilityIncrease(ABILITY_CONSTITUTION, nBonus);
+        effect eCon = EffectAbilityIncrease(ABILITY_STRENGTH, nBonus);
         effect eSave = EffectSavingThrowIncrease(SAVING_THROW_WILL, 4);
         effect eDur = EffectVisualEffect(VFX_DUR_CESSATE_POSITIVE);
 
@@ -55,7 +55,10 @@ void main()
 
         // The delay is because you have to delay the command if you want the function to be able
         // to determine what the ability scores become after adding the bonuses to them.
-       DelayCommand(0.1, GiveExtraRageBonuses(nCon,StrBeforeBonuses , ConBeforeBonuses, nBonus, 4, OBJECT_SELF));
+		
+		// 2010-09-08, Carson: Modified for PRC compatibility
+		int DamType = GetDamageTypeOfWeapon(INVENTORY_SLOT_RIGHTHAND);
+		DelayCommand(0.1, GiveExtraRageBonuses(nCon,StrBeforeBonuses , ConBeforeBonuses, nBonus, nBonus, 4, DamType, OBJECT_SELF));
 
 
                     // 2003-07-08, Georg: Rage Epic Feat Handling
