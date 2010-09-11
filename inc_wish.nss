@@ -197,7 +197,7 @@ string AbilityIncreasesToString(struct Abilities inc)
         o += "Intelligence by "+IntToString(inc.Int) + " ";
         first=0;
     }
-    if (inc.Con > 0)
+    if (inc.Wis > 0)
     {
         if (!first)
             o+=", ";
