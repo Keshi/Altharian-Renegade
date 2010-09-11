@@ -31,7 +31,7 @@ int CalcIncreasesFromRange(int base, int num_increase, int range_min, int range_
     int irrelevant_increases = nmax(0, range_min-base);// exclude increases below min
     int result = nmin (relevant, num_increase - irrelevant_increases); // cap to number of relevant increases
     result = nmax (relevant, 0); // results must be positive
-    SendMessageToPC(GetPCSpeaker(), "CalcIncreasesFromRange("+IntToString(base)+","+IntToString(num_increase)+","+IntToString(range_min)+","+IntToString(range_size)+"="+IntToString(result));
+    SendMessageToPC(GetPCSpeaker(), "CalcIncreasesFromRange("+IntToString(base)+","+IntToString(num_increase)+","+IntToString(range_min)+","+IntToString(range_size)+")="+IntToString(result));
     return result;
 }
 // increasing from 35-39 requires 1 ultimate wish each
