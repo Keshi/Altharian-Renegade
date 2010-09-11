@@ -29,7 +29,9 @@ int CalcIncreasesFromRange(int base, int num_increase, int range_min, int range_
     relevant = nmax (relevant, 0);              // exclude base > max
     relevant = nmin (relevant, range_size);     // exclude base < min
     int irrelevant_increases = nmax(0, range_min-base);// exclude increases below min
-    return nmin (relevant, num_increase - irrelevant_increases); // cap to number of relevant increases
+    int result = nmin (relevant, num_increase - irrelevant_increases); // cap to number of relevant increases
+    SendMessageToPC(GetPCSpeaker(), "CalcIncreasesFromRange("+IntToString(base)+","+IntToString(num_increase)+","+IntToString(range_min)+","+IntToString(range_size)+"="+IntToString(result));
+    return result;
 }
 // increasing from 35-39 requires 1 ultimate wish each
 int CalcUltimateWishesRequired(int base, int mod)
@@ -111,18 +113,20 @@ struct AbilityModRequirements GetTotalAbilityModRequirements(struct Abilities ba
     req.UltimateWishes =CalcTotalUltimateWishesRequired(base,mod);
     return req;
 }
-int CountNonStackingItemsInInventoryWithTag(string tag)
+int CountNonStackingItemsInInventoryWithTag(object player, string tag)
 {
     int count = 0;
-    object item = GetFirstItemInInventory();
+    object item = GetFirstItemInInventory(player);
     while (item != OBJECT_INVALID)
     {
         if (GetTag(item) == tag)
             count++;
-        item = GetNextItemInInventory();
+        item = GetNextItemInInventory(player);
     }
+    SendMessageToPC(player, "You have "+IntToString(count)+" items with the tag "+tag);
     return count;
 }
+
 // Calculates the total resources required for the change, and checks if the player has that.
 int CanPlayerAffordAbilityMod(object player, struct Abilities mod)
 {
@@ -138,11 +142,11 @@ int CanPlayerAffordAbilityMod(object player, struct Abilities mod)
     struct AbilityModRequirements req = GetTotalAbilityModRequirements(base,mod);
     if (GetGold(player) < req.Gold)
         return FALSE;
-    if (CountNonStackingItemsInInventoryWithTag("wish") < req.Wishes)
+    if (CountNonStackingItemsInInventoryWithTag(player,"wish") < req.Wishes)
         return FALSE;
-    if (CountNonStackingItemsInInventoryWithTag("wish001") < req.GreaterWishes)
+    if (CountNonStackingItemsInInventoryWithTag(player,"wish001") < req.GreaterWishes)
         return FALSE;
-    if (CountNonStackingItemsInInventoryWithTag("ultimatewish") < req.UltimateWishes)
+    if (CountNonStackingItemsInInventoryWithTag(player,"ultimatewish") < req.UltimateWishes)
         return FALSE;
     return TRUE;
 }

@@ -7,37 +7,41 @@
 // void wrapper for delaycommand
 void BootAndRunScript(object player)
 {
+    SendMessageToPC(player, "Commencing edit!");
     RunStackedLetoScriptOnObject(player, "OBJECT", "SPAWN");
 }
-void RemoveStuffFromPlayer(object player, struct AbilityModRequirements reqs)
+void RemoveStuffFromPlayerAndContinueScript(object player, struct AbilityModRequirements reqs)
 {
-	object item = GetFirstItemInInventory(player);
-	while (item!=OBJECT_INVALID)
-	{
-		string tag = GetTag(item);
-		if (reqs.UltimateWishes>0)
-			if (tag == "ultimatewish")
-			{
-				DestroyObject(item);
-				reqs.UltimateWishes -= 1;
-				continue;
-			}
-		if (reqs.GreaterWishes>0)
-			if (tag == "wish001")
-			{
-				DestroyObject(item);
-				reqs.GreaterWishes -= 1;
-				continue;
-			}
-		if (reqs.Wishes>0)
-			if (tag == "wish")
-			{
-				DestroyObject(item);
-				reqs.Wishes -= 1;
-				continue;
-			}
-	}
-	TakeGoldFromCreature(reqs.Gold, player);
+    object item = GetFirstItemInInventory(player);
+    while (item!=OBJECT_INVALID)
+    {
+        string tag = GetTag(item);
+        if (reqs.UltimateWishes>0)
+            if (tag == "ultimatewish")
+            {
+                DestroyObject(item);
+                reqs.UltimateWishes -= 1;
+            }
+        if (reqs.GreaterWishes>0)
+            if (tag == "wish001")
+            {
+                DestroyObject(item);
+                reqs.GreaterWishes -= 1;
+            }
+        if (reqs.Wishes>0)
+            if (tag == "wish")
+            {
+                DestroyObject(item);
+                reqs.Wishes -= 1;
+            }
+        item = GetNextItemInInventory(player);
+    }
+    TakeGoldFromCreature(reqs.Gold, player);
+
+    ExecuteScript("wish_c_reset", player);
+
+    // Delay this because we need to take away the wish items first, and item deletion runs after the current script completes
+    DelayCommand(0.5f, BootAndRunScript(player));
 }
 void DoLetoModifyAbilities(object player)
 {
@@ -47,7 +51,7 @@ void DoLetoModifyAbilities(object player)
         SendMessageToPC(player, "Wish aborted!  Please try again.");
         return;
     }
-	
+
     struct Abilities base;
     base.Str = GetAbilityScore(player, ABILITY_STRENGTH, TRUE);
     base.Dex = GetAbilityScore(player, ABILITY_DEXTERITY, TRUE);
@@ -55,9 +59,9 @@ void DoLetoModifyAbilities(object player)
     base.Int = GetAbilityScore(player, ABILITY_INTELLIGENCE, TRUE);
     base.Wis = GetAbilityScore(player, ABILITY_WISDOM, TRUE);
     base.Cha = GetAbilityScore(player, ABILITY_CHARISMA, TRUE);
-	
-	RemoveStuffFromPlayer(player, GetTotalAbilityModRequirements(base, mod));
-	
+
+
+
     //Ability Scores
     string sScript;
     if (mod.Str>0)
@@ -74,8 +78,8 @@ void DoLetoModifyAbilities(object player)
         sScript += SetAbility(ABILITY_CHARISMA, mod.Cha + base.Cha);
 
     StackedLetoScript(sScript);
-    // Delay this because we need to take away the wish items first, and item deletion runs after the current script completes
-    DelayCommand(0.5f, BootAndRunScript(player));
+    // Delay to avoid TMI
+    DelayCommand(0.0f,RemoveStuffFromPlayerAndContinueScript(player, GetTotalAbilityModRequirements(base, mod)));
 }
 
 void main()
