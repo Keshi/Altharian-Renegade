@@ -22,18 +22,26 @@ struct Abilities
 int nmin(int x, int y) { return x>y?y:x; }
 int nmax(int x, int y) { return x>y?x:y; }
 
-// Calculates the size of the resulting set from  [base, base+num_increases-1] overlapping [range_min, range_min+range_size-1]
-int CalcIncreasesFromRange(int base, int num_increase, int range_min, int range_size)
+// All parameters should be given as the pre-adjustment value.  range_min and range_max are inclusive.
+/*
+test cases:
+18,1,0,19  // within, should be 1
+18,3,0,19  // extending above, should be 1
+18,1,20,24 // below, should be 0
+18,3,20,24 // extending below should be 2
+25,3,20,24 // above, should be 0
+18,10,20,24 // superset, should be 5
+*/
+
+int CalcIncreasesFromRange(int base, int num_increase, int range_min, int range_max)
 {
-    int relevant = range_min + range_size - base;
-    relevant = nmax (relevant, 0);              // exclude base > max
-    relevant = nmin (relevant, range_size);     // exclude base < min
-    int irrelevant_increases = nmax(0, range_min-base);// exclude increases below min
-    int result = nmin (relevant, num_increase - irrelevant_increases); // cap to number of relevant increases
-    result = nmax (relevant, 0); // results must be positive
-    SendMessageToPC(GetPCSpeaker(), "CalcIncreasesFromRange("+IntToString(base)+","+IntToString(num_increase)+","+IntToString(range_min)+","+IntToString(range_size)+")="+IntToString(result));
-    return result;
+	int toolow = nmax(0, range_min - base - 1);
+	int toohigh = nmax(0, base + num_increase - range_max);
+	int inrange = num_increase - toolow - toohigh;
+	inrange = nmin(num_increase, inrange);  // handles the cases where all increases are out of range
+	return inrange;
 }
+
 // increasing from 35-39 requires 1 ultimate wish each
 int CalcUltimateWishesRequired(int base, int mod)
 {
