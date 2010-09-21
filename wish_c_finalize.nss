@@ -43,10 +43,11 @@ void RemoveStuffFromPlayerAndContinueScript(object player, struct AbilityModRequ
     // Delay this because we need to take away the wish items first, and item deletion runs after the current script completes
     DelayCommand(0.5f, BootAndRunScript(player));
 }
-void DoLetoModifyAbilities(object player)
+void CheckForExploitAndContinueScript(object player)
 {
     struct Abilities mod = ReadCurrentAbilityModSettings(player);
-    if (!CanPlayerAffordAbilityMod(player,mod))
+    // Make sure they didn't drop their money right before confirming
+	if (!CanPlayerAffordAbilityMod(player,mod))
     {
         SendMessageToPC(player, "Wish aborted!  Please try again.");
         return;
@@ -84,5 +85,6 @@ void DoLetoModifyAbilities(object player)
 
 void main()
 {
-    DoLetoModifyAbilities(GetPCSpeaker());
+	SendMessageToPC(GetPCSpeaker(), "This feature is coming soon.  Thank you for testing!");
+    //CheckForExploitAndContinueScript(GetPCSpeaker());
 }
