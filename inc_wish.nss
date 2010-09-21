@@ -36,9 +36,11 @@ test cases:
 int CalcIncreasesFromRange(int base, int num_increase, int range_min, int range_max)
 {
 	int toolow = nmax(0, range_min - base - 1);
-	int toohigh = nmax(0, base + num_increase - range_max);
+	int toohigh = nmax(0, nmin(num_increase, base + num_increase - range_max));
 	int inrange = num_increase - toolow - toohigh;
+	SendMessageToPC(GetPCSpeaker(), "CalcIncreasesFromRange: There are "+IntToString(inrange)+" values from "+IntToString(range_min)+" to "+IntToString(range_max)+", if you count up to "+IntToString(num_increase)+" numbers starting from "+IntToString(base)+".");
 	inrange = nmin(num_increase, inrange);  // handles the cases where all increases are out of range
+	
 	return inrange;
 }
 
