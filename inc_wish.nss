@@ -45,7 +45,7 @@ int CalcIncreasesFromRange(int base, int num_increase, int range_min, int range_
 // increasing from 35-39 requires 1 ultimate wish each
 int CalcUltimateWishesRequired(int base, int mod)
 {
-    return CalcIncreasesFromRange(base, mod, 35, 5);
+    return CalcIncreasesFromRange(base, mod, 35, 39);
 }
 int CalcTotalUltimateWishesRequired(struct Abilities base, struct Abilities mod)
 {
@@ -60,7 +60,7 @@ int CalcTotalUltimateWishesRequired(struct Abilities base, struct Abilities mod)
 // Incrementing from 30-34 requires 1 greater wish each
 int CalcGreaterWishesRequired(int base, int mod)
 {
-    return CalcIncreasesFromRange(base, mod, 30, 5);
+    return CalcIncreasesFromRange(base, mod, 30, 34);
 }
 
 int CalcTotalGreaterWishesRequired(struct Abilities base, struct Abilities mod)
@@ -78,8 +78,8 @@ int CalcTotalGreaterWishesRequired(struct Abilities base, struct Abilities mod)
 // Incrementing from 25-29 requires 3 wishes each.  20-24 requires 2 wishes each.
 int CalcWishesRequired(int base, int mod)
 {
-    return CalcIncreasesFromRange(base, mod, 20, 5) * 2
-          +CalcIncreasesFromRange(base, mod, 25, 5) * 3;
+    return CalcIncreasesFromRange(base, mod, 20, 24) * 2
+          +CalcIncreasesFromRange(base, mod, 25, 29) * 3;
 }
 
 int CalcTotalWishesRequired(struct Abilities base, struct Abilities mod)
@@ -94,12 +94,7 @@ int CalcTotalWishesRequired(struct Abilities base, struct Abilities mod)
 }
 int CalcGoldRequired(int base, int mod)
 {
-    int relevant = 20-base;
-    if (relevant<=0)
-        return 0;
-    else if (relevant > mod)
-        relevant = mod;
-    return relevant * 1000000;
+	return CalcIncreasesFromRange(base, mod, 0, 19) * 1000000;
 }
 // Incrementing from 0-19 requires 1 million gold each.
 int CalcTotalGoldRequired(struct Abilities base, struct Abilities mod)
