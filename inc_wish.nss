@@ -2,6 +2,7 @@
 // Include file for the automated wishing system
 // See wish_c_finalize
 
+const string INC_WISH_VERSION = "1.0";
 struct AbilityModRequirements
 {
     int UltimateWishes;
@@ -38,7 +39,7 @@ int CalcIncreasesFromRange(int base, int num_increase, int range_min, int range_
 	int toolow = nmax(0, nmin(num_increase, range_min - base - 1));
 	int toohigh = nmax(0, nmin(num_increase, base + num_increase - range_max));
 	int inrange = num_increase - toolow - toohigh;
-	SendMessageToPC(GetPCSpeaker(), "CalcIncreasesFromRange: There are "+IntToString(inrange)+" values from "+IntToString(range_min)+" to "+IntToString(range_max)+", if you count up to "+IntToString(num_increase)+" numbers starting from "+IntToString(base)+".");
+	//SendMessageToPC(GetPCSpeaker(), "CalcIncreasesFromRange: There are "+IntToString(inrange)+" values from "+IntToString(range_min)+" to "+IntToString(range_max)+", if you count up to "+IntToString(num_increase)+" numbers starting from "+IntToString(base)+".");
 	inrange = nmin(num_increase, inrange);  // handles the cases where all increases are out of range
 	
 	return inrange;
@@ -262,7 +263,7 @@ string RequirementsToString(struct AbilityModRequirements req)
 void FixCustomTokens()
 {
     object player = GetPCSpeaker();
-	SendMessageToPC(player, "Wish NPC v1");
+	SendMessageToPC(player, "Wish NPC v"+INC_WISH_VERSION+".");
     struct Abilities mod =  ReadCurrentAbilityModSettings(player);
     struct Abilities base;
     base.Str = GetAbilityScore(player, ABILITY_STRENGTH, TRUE);

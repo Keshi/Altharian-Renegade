@@ -77,7 +77,8 @@ void CheckForExploitAndContinueScript(object player)
         sScript += SetAbility(ABILITY_WISDOM, mod.Wis + base.Wis);
     if (mod.Cha>0)
         sScript += SetAbility(ABILITY_CHARISMA, mod.Cha + base.Cha);
-
+	
+	SendMessageToPC(player, "Preparing to edit: "+sScript);
     StackedLetoScript(sScript);
     // Delay to avoid TMI
     DelayCommand(0.0f,RemoveStuffFromPlayerAndContinueScript(player, GetTotalAbilityModRequirements(base, mod)));
@@ -85,6 +86,6 @@ void CheckForExploitAndContinueScript(object player)
 
 void main()
 {
-	SendMessageToPC(GetPCSpeaker(), "This feature is coming soon.  Thank you for testing!");
-    //CheckForExploitAndContinueScript(GetPCSpeaker());
+	//SendMessageToPC(GetPCSpeaker(), "This feature is coming soon.  Thank you for testing!");
+    CheckForExploitAndContinueScript(GetPCSpeaker());
 }
