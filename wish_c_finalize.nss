@@ -66,17 +66,17 @@ void CheckForExploitAndContinueScript(object player)
     //Ability Scores
     string sScript;
     if (mod.Str>0)
-        sScript += SetAbility(ABILITY_STRENGTH, mod.Str + base.Str);
+        sScript += AdjustAbility(ABILITY_STRENGTH, mod.Str);
     if (mod.Dex>0)
-        sScript += SetAbility(ABILITY_DEXTERITY, mod.Dex + base.Dex);
+        sScript += AdjustAbility(ABILITY_DEXTERITY, mod.Dex);
     if (mod.Con>0)
-        sScript += SetAbility(ABILITY_CONSTITUTION, mod.Con + base.Con);
+        sScript += AdjustAbility(ABILITY_CONSTITUTION, mod.Con);
     if (mod.Int>0)
-        sScript += SetAbility(ABILITY_INTELLIGENCE, mod.Int + base.Int);
+        sScript += AdjustAbility(ABILITY_INTELLIGENCE, mod.Int);
     if (mod.Wis>0)
-        sScript += SetAbility(ABILITY_WISDOM, mod.Wis + base.Wis);
+        sScript += AdjustAbility(ABILITY_WISDOM, mod.Wis);
     if (mod.Cha>0)
-        sScript += SetAbility(ABILITY_CHARISMA, mod.Cha + base.Cha);
+        sScript += AdjustAbility(ABILITY_CHARISMA, mod.Cha);
 	
 	SendMessageToPC(player, "Preparing to edit: "+sScript);
     StackedLetoScript(sScript);
