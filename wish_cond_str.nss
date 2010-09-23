@@ -1,7 +1,7 @@
 int StartingConditional()
 {
     int iResult;
-    iResult = GetAbilityScore(GetPCSpeaker(), ABILITY_STRENGTH, TRUE) < 40;
+    iResult = GetAbilityScore(GetPCSpeaker(), ABILITY_STRENGTH, TRUE) + GetLocalInt(GetPCSpeaker(), "wish_inc_str") < 40;
 
     return iResult;
 }

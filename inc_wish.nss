@@ -2,7 +2,7 @@
 // Include file for the automated wishing system
 // See wish_c_finalize
 
-const string INC_WISH_VERSION = "1.01";
+const string INC_WISH_VERSION = "1.02";
 struct AbilityModRequirements
 {
     int UltimateWishes;
@@ -38,7 +38,8 @@ int CalcIncreasesFromRange(int base, int num_increase, int range_min, int range_
 // increasing to 36-40 requires 1 ultimate wish each
 int CalcUltimateWishesRequired(int base, int mod)
 {
-    return CalcIncreasesFromRange(base, mod, 36, 40);
+    return CalcIncreasesFromRange(base, mod, 41, 45)
+		  +CalcIncreasesFromRange(base, mod, 46, 50)*2;
 }
 int CalcTotalUltimateWishesRequired(struct Abilities base, struct Abilities mod)
 {
@@ -53,7 +54,8 @@ int CalcTotalUltimateWishesRequired(struct Abilities base, struct Abilities mod)
 // Incrementing to 31-35 requires 1 greater wish each
 int CalcGreaterWishesRequired(int base, int mod)
 {
-    return CalcIncreasesFromRange(base, mod, 31, 35);
+    return CalcIncreasesFromRange(base, mod, 31, 35)
+		  +CalcIncreasesFromRange(base, mod, 36, 40)*2;
 }
 
 int CalcTotalGreaterWishesRequired(struct Abilities base, struct Abilities mod)
