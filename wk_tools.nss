@@ -4,6 +4,9 @@
 /////:: GetEffectiveLevel, GetEffectiveCasterLevel, Guardian data functions,
 /////:: Various additional functions for Wand of Stats
 /////:://///////////////////////////////////////////////////////////////////////
+#include "prc_inc_spells"
+#include "psi_inc_core"
+#include "prc_class_const"
 
 int GetEffectiveLevel (object oChar)
 {
@@ -61,15 +64,27 @@ string GetCurrentGuildName (object oPC)
 
 int GetSneaky (object oPC)
 {
-  int nAss = GetLevelByClass(CLASS_TYPE_ASSASSIN, oPC);
-  int nBlack = GetLevelByClass(CLASS_TYPE_BLACKGUARD, oPC);
-  int nRogue = GetLevelByClass(CLASS_TYPE_ROGUE, oPC);
-  int nShadow = GetLevelByClass(CLASS_TYPE_SHADOWDANCER, oPC);
-
-  int nTotal = nAss + nBlack + nRogue + nShadow;
-  return nTotal;
+  //int nAss = GetLevelByClass(CLASS_TYPE_ASSASSIN, oPC);
+  //int nBlack = GetLevelByClass(CLASS_TYPE_BLACKGUARD, oPC);
+  //int nRogue = GetLevelByClass(CLASS_TYPE_ROGUE, oPC);
+  int nSneakyButNoSA= GetLevelByClass(CLASS_TYPE_SHADOWDANCER, oPC);
+  int nSA = GetTotalSneakAttackDice(oPC);
+  
+  // require 8d6 sneak attack, or equivalent other sneaky class levels
+  // compare against 21
+  return (1 + FloatToInt(nSA * 2.5) + nSneakyButNoSA);
+	//int nTotal = nAss + nBlack + nRogue + nShadow;
+  //return nTotal;
 }
-
+int GetBardRelatedLevels (object oPC)
+{
+	return 	 GetLevelByClass(CLASS_TYPE_BARD, oPC)
+			+GetLevelByClass(CLASS_TYPE_DIRGESINGER, oPC)
+			+GetLevelByClass(CLASS_TYPE_HARPER, oPC)
+			+GetLevelByClass(CLASS_TYPE_MINSTREL_EDGE, oPC)
+			+GetLevelByClass(CLASS_TYPE_SUBLIME_CHORD, oPC)
+			+GetLevelByClass(CLASS_TYPE_VIRTUOSO, oPC);
+}
 int GetIsEligible (object oPC, string sUpgrade)
 {
   int nArch = GetLevelByClass(CLASS_TYPE_ARCANE_ARCHER, oPC);
@@ -98,25 +113,76 @@ int GetIsEligible (object oPC, string sUpgrade)
   int bEligible = FALSE;
   int nLevel;
 
-  if (sUpgrade == "magestaff") nLevel = nSorc + nWizard + nPaleM;
-  if (sUpgrade == "vesperbel") nLevel = nCleric + nPally + nCoT;
-  if (sUpgrade == "holysword") nLevel = nCleric + nPally + nCoT;
-  if (sUpgrade == "whitegold") nLevel = nDruid + nRanger + nShift;
-  if (sUpgrade == "harmonics") nLevel = nBard + nRDD + nHarp;
-  if (sUpgrade == "fulminate") nLevel = nFighter + nBarb + nBlack + nCoT + nDwarf + nMonk + nPally + nRanger + nWeaps;
-  if (sUpgrade == "stilletto") nLevel = nRogue + nAss + nShadow + nWeaps + nBlack + nRanger;
-  if (sUpgrade == "innerpath") nLevel = nMonk;
-  if (sUpgrade == "archerbow") nLevel = nFighter + nBarb + nBlack + nCoT + nDwarf + nMonk + nPally + nRanger + nWeaps + nCleric + nBard + nDruid + nSorc + nWizard + nPaleM + nRogue + nAss + nShadow + nRDD + nHarp + nArch + nShift;
+  if (sUpgrade == "psicrystal")
+  {
+	int class = GetPrimaryPsionicClass(oPC);
+	if (class == CLASS_TYPE_INVALID)
+		nLevel=0;
+	else
+	{
+		nLevel = GetLevelByClass(class, oPC);
+		nLevel += GetPsionicPRCLevels(oPC);
+		nLevel += GetLocalInt(oPC, PRC_CASTERLEVEL_ADJUSTMENT); // is this variable even used for non-debug characters?
+		nLevel += PracticedManifesting(oPC, class, nLevel); // must be calculated from final manifesting level
+		
+	}
+  }  
+  //if (sUpgrade == "magestaff") nLevel = nSorc + nWizard + nPaleM;
+  if (sUpgrade == "magestaff") nLevel = GetPrCAdjustedCasterLevelByType(TYPE_ARCANE, oPC);	
+  //if (sUpgrade == "vesperbel") nLevel = nCleric + nPally + nCoT;
+  if (sUpgrade == "vesperbel" 
+   || sUpgrade == "holysword"
+   || sUpgrade == "whitegold") nLevel = GetPrCAdjustedCasterLevelByType(TYPE_DIVINE, oPC);
+  //if (sUpgrade == "holysword") nLevel = nCleric + nPally + nCoT;
+  //if (sUpgrade == "whitegold") nLevel = nDruid + nRanger + nShift;
+  //if (sUpgrade == "harmonics") nLevel = nBard + nRDD + nHarp;
+  if (sUpgrade == "harmonics")
+	nLevel = GetBardRelatedLevels(oPC);
+  //if (sUpgrade == "fulminate") nLevel = nFighter + nBarb + nBlack + nCoT + nDwarf + nMonk + nPally + nRanger + nWeaps;
+  if (sUpgrade == "fulminate") nLevel = GetEffectiveLevel(oPC);
+  //if (sUpgrade == "stilletto") nLevel = nRogue + nAss + nShadow + nWeaps + nBlack + nRanger;
+  if (sUpgrade == "stilletto") nLevel = GetSneaky(oPC);
+  // must have at least one level of monk.  what other unarmed specialist classes should qualify?
+  if (sUpgrade == "innerpath") 
+	nLevel = nMonk? GetEffectiveLevel(oPC):0;
+  //if (sUpgrade == "archerbow") nLevel = nFighter + nBarb + nBlack + nCoT + nDwarf + nMonk + nPally + nRanger + nWeaps + nCleric + nBard + nDruid + nSorc + nWizard + nPaleM + nRogue + nAss + nShadow + nRDD + nHarp + nArch + nShift;
+  if (sUpgrade == "archerbow") nLevel = GetEffectiveLevel(oPC);
 
   if (nLevel >= 21) bEligible = TRUE;
   if (sUpgrade == "holysword" && nPally < 5) bEligible = FALSE;
-  if (sUpgrade == "stilletto")
-  {
-    nLevel = nRogue + nAss + nShadow + nBlack;
-    if (nLevel < 5) bEligible = FALSE;
-  }
+  if (sUpgrade == "whitegold" && nDruid < 1 && nRanger <1) bEligible = FALSE;
+
 
   return bEligible;
+}
+#include "inc_2dacache"
+
+// Creates a score based on bab of classes, even into epic.
+// No difference between 20fi/20wi and 20wi/20fi
+int GetAttackProgressionScore(object oPC)
+{
+	int score =0;
+	int i=1;
+	for (i=1;i<=3;i++)
+	{
+		int class = GetClassByPosition(i, oPC);
+		if (class == CLASS_TYPE_INVALID) break;
+		string progression = Get2DACache("classes", "AttackBonusTable", class);
+		int level = GetLevelByPosition(i, oPC);
+		if (progression == "CLS_ATK_1")
+			score = score + level;
+		else if (progression == "CLS_ATK_2")
+			score = score + level - 1 - (level-1)/4;
+		else if (progression == "CLS_ATK_3")
+			score = score + level/2;
+		//else if (progression == "CLS_ATK_4") // do nothing, 0 progression
+	}
+	SendMessageToPC(oPC, "Your attack progression score is: "+IntToString(score)+".");
+	return score;
+}
+int GetHolySwordLevel(object oPC)
+{
+	return GetPrCAdjustedCasterLevelByType(TYPE_DIVINE, oPC);
 }
 
 int GetStrikeLevel (object oPC, string sUpgrade)
@@ -140,8 +206,10 @@ int GetStrikeLevel (object oPC, string sUpgrade)
   int nLevel = GetHitDice(oPC);
 
   if (sUpgrade == "holysword") nLevel = nCleric + nPally + nCoT;
-  if (sUpgrade == "fulminate") nLevel = nFighter + nBarb + nBlack + nCoT + nDwarf + nMonk + nPally + nRanger + nWeaps;
-  if (sUpgrade == "stilletto") nLevel = nRogue + nAss + nShadow + nWeaps + nBlack + nRanger;
+  //if (sUpgrade == "fulminate") nLevel = nFighter + nBarb + nBlack + nCoT + nDwarf + nMonk + nPally + nRanger + nWeaps;
+  if (sUpgrade == "fulminate") nLevel = GetAttackProgressionScore(oPC);
+  //if (sUpgrade == "stilletto") nLevel = nRogue + nAss + nShadow + nWeaps + nBlack + nRanger;
+  if (sUpgrade == "stilletto") nLevel = GetSneaky(oPC);
   if (sUpgrade == "innerpath") nLevel = nMonk;
   if (sUpgrade == "whitegold") nLevel = nRanger + nDruid + nShift;
 
