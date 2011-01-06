@@ -10,18 +10,53 @@
 //:: Created By: Naomi Novik
 //:: Created On: 12/22/2002
 //:://////////////////////////////////////////////////
+//:://////////////////////////////////////////////////
+//:: Modified By: Deva Winblood
+//:: Modified On: Jan 17th, 2008
+//:: Added Support for Mounted Combat Feat Support
+//:://////////////////////////////////////////////////
 
 #include "nw_i0_generic"
-#include "wk_onattacked"
+#include "x3_inc_horse"
 
 void main()
 {
+
+//Arrows in body
+ExecuteScript("pt_ainb_main", OBJECT_SELF);
+
+    object oDamager = GetLastDamager();
+    object oMe=OBJECT_SELF;
+    int nHPBefore;
+    if (!GetLocalInt(GetModule(),"X3_NO_MOUNTED_COMBAT_FEAT"))
+    if (GetHasFeat(FEAT_MOUNTED_COMBAT)&&HorseGetIsMounted(OBJECT_SELF))
+    { // see if can negate some damage
+        if (GetLocalInt(OBJECT_SELF,"bX3_LAST_ATTACK_PHYSICAL"))
+        { // last attack was physical
+            nHPBefore=GetLocalInt(OBJECT_SELF,"nX3_HP_BEFORE");
+            if (!GetLocalInt(OBJECT_SELF,"bX3_ALREADY_MOUNTED_COMBAT"))
+            { // haven't already had a chance to use this for the round
+                SetLocalInt(OBJECT_SELF,"bX3_ALREADY_MOUNTED_COMBAT",TRUE);
+                int nAttackRoll=GetBaseAttackBonus(oDamager)+d20();
+                int nRideCheck=GetSkillRank(SKILL_RIDE,OBJECT_SELF)+d20();
+                if (nRideCheck>=nAttackRoll&&!GetIsDead(OBJECT_SELF))
+                { // averted attack
+                    if (GetIsPC(oDamager)) SendMessageToPC(oDamager,GetName(OBJECT_SELF)+GetStringByStrRef(111991));
+                    //if (GetIsPC(OBJECT_SELF)) SendMessageToPCByStrRef(OBJECT_SELF,111992");
+                    if (GetCurrentHitPoints(OBJECT_SELF)<nHPBefore)
+                    { // heal
+                        effect eHeal=EffectHeal(nHPBefore-GetCurrentHitPoints(OBJECT_SELF));
+                        AssignCommand(GetModule(),ApplyEffectToObject(DURATION_TYPE_INSTANT,eHeal,oMe));
+                    } // heal
+                } // averted attack
+            } // haven't already had a chance to use this for the round
+        } // last attack was physical
+    } // see if can negate some damage
     if(GetFleeToExit()) {
         // We're supposed to run away, do nothing
     } else if (GetSpawnInCondition(NW_FLAG_SET_WARNINGS)) {
         // don't do anything?
     } else {
-        object oDamager = GetLastDamager();
         if (!GetIsObjectValid(oDamager)) {
             // don't do anything, we don't have a valid damager
         } else if (!GetIsFighting(OBJECT_SELF)) {
@@ -67,25 +102,6 @@ void main()
             }
         }
     }
-
-////////////////////////////////////////////////////////////////////////////////
-//:: Use this section to add creatures that need to do reflective damage.
-//:: Options for reflective damage include negative, fire, positive, cold, acid
-//:: electrical, or sonic.
-//:: Refer to the scripts from the library script as needed.
-////////////////////////////////////////////////////////////////////////////////
-
-    string sTag = GetTag(OBJECT_SELF);
-    if (sTag == "boom_3n_RuinHead" || sTag == "boom_3n_RuinKnight" ||
-        sTag == "boom_2n_GBlastDem2" || sTag == "boom_5n_RuinsBanner" ||
-        sTag == "pc_RuindDemonGreater")
-    {
-      BacklashNegativeDamage (GetLastAttacker());
-    }
-
-
-
-
 
     // Send the user-defined event signal
     if(GetSpawnInCondition(NW_FLAG_DAMAGED_EVENT))

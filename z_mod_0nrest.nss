@@ -28,7 +28,7 @@ Thanks to the NWN Lexicon, it helped me alot!
 
 //USER ADJUSTABLE VARIABLES
 //the number of hours the players must wait between full rests
-int TIMEBETWEENRESTING=1;
+int TIMEBETWEENRESTING=0;
 //do you want to display the time until next rest in real world minutes?
 //(default: game hours)
 int REALTIMEMINUTES=0;
