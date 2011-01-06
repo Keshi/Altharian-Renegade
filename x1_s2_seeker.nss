@@ -25,8 +25,9 @@
 //:: Created By:
 //:: Created On:
 //:://////////////////////////////////////////////
-#include "X0_I0_SPELLS"
+
 #include "wk_tools"
+#include "alth_inc_aa"
 void main()
 {
     int nLevel = GetLevelByClass(CLASS_TYPE_ARCANE_ARCHER, OBJECT_SELF);

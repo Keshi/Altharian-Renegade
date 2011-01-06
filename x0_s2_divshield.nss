@@ -11,7 +11,6 @@
 //:: Created By: Brent
 //:: Created On: Sep 13, 2002
 //:://////////////////////////////////////////////
-#include "x0_i0_spells"
 #include "wk_tools"
 void main()
 {

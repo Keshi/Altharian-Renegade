@@ -324,5 +324,16 @@ int GetHarmonic (object oBard)
   return nHarmonic;
 }
 
+
+//copied from nw_i0_spells.nss to remove depency, for compiling with prc
+void RemoveEffectsFromSpell(object oTarget, int SpellID)
+{
+  effect eLook = GetFirstEffect(oTarget);
+  while (GetIsEffectValid(eLook)) {
+    if (GetEffectSpellId(eLook) == SpellID)
+      RemoveEffect(oTarget, eLook);
+    eLook = GetNextEffect(oTarget);
+  }
+}
 // This is for compiling testing if the function changes.
 // void main(){}

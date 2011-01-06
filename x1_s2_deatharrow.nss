@@ -16,9 +16,9 @@
 //:: Created By:
 //:: Created On:
 //:://////////////////////////////////////////////
-#include "X0_I0_SPELLS"
-#include "x2_inc_itemprop"
+
 #include "wk_tools"
+#include "alth_inc_aa"
 
 void main()
 {
@@ -48,7 +48,7 @@ void main()
                 SignalEvent(oTarget, EventSpellCastAt(OBJECT_SELF, GetSpellId()));
 
                 // * if target fails a save DC20 they die
-                if (MySavingThrow(SAVING_THROW_FORT, oTarget, (20+nMod)) == 0)
+                if (PRCMySavingThrow(SAVING_THROW_FORT, oTarget, (20+nMod)) == 0)
                 {
                     effect eDeath = EffectDeath();
                     ApplyEffectToObject(DURATION_TYPE_INSTANT, eDeath, oTarget);
@@ -57,4 +57,3 @@ void main()
         }
     }
 }
-

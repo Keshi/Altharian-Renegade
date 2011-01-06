@@ -13,9 +13,10 @@
 //:: Created By:
 //:: Created On:
 //:://////////////////////////////////////////////
-#include "x0_i0_spells"
-#include "wk_tools"
 
+
+#include "wk_tools"
+#include "alth_inc_aa"
 // GZ: 2003-07-23 fixed criticals not being honored
 void DoAttack(object oTarget)
 {
