@@ -70,6 +70,12 @@ void PRC_Funcs_SetHitPointsByLevel(object oCreature, int iHP, int iLevel);
 // Changes the hitpoints gained at iLevel by iHPMod
 void PRC_Funcs_ModHitPointsByLevel(object oCreature, int iHPMod, int iLevel);
 
+// Sets the amount of hitpoints oObject has currently to iHP
+void PRC_Funcs_SetCurrentHitPoints(object oCreature, int iHP);
+
+// Sets the amount of hitpoints oObject can maximally have to iHP
+void PRC_Funcs_SetMaxHitPoints(object oCreature, int iHP);
+
 // Changes the skill ranks for iSkill on oObject to iValue
 void PRC_Funcs_SetSkill(object oCreature, int iSkill, int iValue);
 
@@ -166,6 +172,29 @@ string PRC_Funcs_GetKnownSpells(object oCreature, int iClass, int iSpellLevel, s
 
 // returns the number of spells known for a given class and spell level
 int PRC_Funcs_GetKnownSpellCount(object oCreature, int iClass, int iSpellLevel);
+
+// Retuns the bonus to a saving throw for oCreature
+// This is the additional bonus, usually set in the toolset for NPCs, not a bonus from items or effects
+int PRC_Funcs_GetSavingThrowBonus(object oCreature, int iSavingThrow = SAVING_THROW_FORT);
+
+// Set the saving throw bonus iSavingThrow of oObject to iValue;
+void PRC_Funcs_SetSavingThrowBonus(object oCreature, int iSavingThrow, int iValue);
+
+// Changes the saving throw bonus iSavingThrow of oObject by iValue;
+void PRC_Funcs_ModSavingThrowBonus(object oCreature, int iSavingThrow, int iValue);
+
+// Sets the base AC for a given AC type
+// Effectively, this is the base AC of the item (armour or shield) worn; or the Natural AC set in the toolset for a creature; ; does not make changes to any items themselves
+// Valid values for iACType are:
+// AC_ARMOUR_ENCHANTMENT_BONUS (base ac of the armor worn)
+// AC_SHIELD_ENCHANTMENT_BONUS (base ac of the shield worn)
+// AC_NATURAL_BONUS (base ac of a creature set in the toolset)
+void PRC_Funcs_SetBaseAC(object oCreature, int iValue, int iACType = AC_ARMOUR_ENCHANTMENT_BONUS);
+
+// Returns the base AC for a given AC type
+// Effectively, this is the base AC of the item (armour or shield) worn; or the Natural AC set in the toolset for a creature
+// See NWNXFuncs_SetBaseAC for iACType values
+int PRC_Funcs_GetBaseAC(object oCreature, int iACType = AC_ARMOUR_ENCHANTMENT_BONUS);
 
 //////////////////////////////////////////////////
 /*                 Constants                    */
@@ -295,6 +324,18 @@ void PRC_Funcs_ModHitPointsByLevel(object oCreature, int iHPMod, int iLevel)
 {
     SetLocalString(oCreature, "NWNX!FUNCS!SETHITPOINTSBYLEVEL", IntToString(iHPMod)+" "+IntToString(iLevel)+" 1");
     DeleteLocalString(oCreature, "NWNX!FUNCS!SETHITPOINTSBYLEVEL");
+}
+
+void NWNXFuncs_SetCurrentHitPoints(object oCreature, int iHP)
+{
+    SetLocalString(oCreature, "NWNX!FUNCS!SETCURRENTHITPOINTS", IntToString(iHP));
+    DeleteLocalString(oCreature, "NWNX!FUNCS!SETCURRENTHITPOINTS");
+}
+
+void NWNXFuncs_SetMaxHitPoints(object oCreature, int iHP)
+{
+    SetLocalString(oCreature, "NWNX!FUNCS!SETMAXHITPOINTS", IntToString(iHP));
+    DeleteLocalString(oCreature, "NWNX!FUNCS!SETMAXHITPOINTS");
 }
 
 void PRC_Funcs_SetSkill(object oCreature, int iSkill, int iValue)
@@ -477,5 +518,39 @@ int PRC_Funcs_GetKnownSpellCount(object oCreature, int iClass, int iSpellLevel)
     SetLocalString(oCreature, "NWNX!FUNCS!GETKNOWNSPELLCOUNT", IntToString(iClass)+ " " +IntToString(iSpellLevel));
     int iRet = StringToInt(GetLocalString(oCreature, "NWNX!FUNCS!GETKNOWNSPELLCOUNT"));
     DeleteLocalString(oCreature, "NWNX!FUNCS!GETKNOWNSPELLCOUNT");
+    return iRet;
+}
+
+int PRC_Funcs_GetSavingThrowBonus(object oCreature, int iSavingThrow = SAVING_THROW_FORT)
+{
+    SetLocalString(oCreature, "NWNX!FUNCS!GETSAVINGTHROWBONUS", IntToString(iSavingThrow));
+    int ret = StringToInt(GetLocalString(oCreature, "NWNX!FUNCS!GETSAVINGTHROWBONUS"));
+    DeleteLocalString(oCreature, "NWNX!FUNCS!GETSAVINGTHROWBONUS");
+    return ret;
+}
+
+void PRC_Funcs_SetSavingThrowBonus(object oCreature, int iSavingThrow, int iValue)
+{
+    SetLocalString(oCreature, "NWNX!FUNCS!SETSAVINGTHROWBONUS", IntToString(iSavingThrow)+" "+IntToString(iValue)+" 0");
+    DeleteLocalString(oCreature, "NWNX!FUNCS!SETSAVINGTHROWBONUS");
+}
+
+void PRC_Funcs_ModSavingThrowBonus(object oCreature, int iSavingThrow, int iValue)
+{
+    SetLocalString(oCreature, "NWNX!FUNCS!SETSAVINGTHROWBONUS", IntToString(iSavingThrow)+" "+IntToString(iValue)+" 1");
+    DeleteLocalString(oCreature, "NWNX!FUNCS!SETSAVINGTHROWBONUS");
+}
+
+void PRC_Funcs_SetBaseAC(object oCreature, int iValue, int iACType = AC_ARMOUR_ENCHANTMENT_BONUS)
+{
+    SetLocalString(oCreature, "NWNX!FUNCS!SETBASEAC", IntToString(iValue)+" "+IntToString(iACType));
+    DeleteLocalString(oCreature, "NWNX!FUNCS!SETBASEAC");
+}
+
+int PRC_Funcs_GetBaseAC(object oCreature, int iACType = AC_ARMOUR_ENCHANTMENT_BONUS)
+{
+    SetLocalString(oCreature, "NWNX!FUNCS!GETBASEAC", IntToString(iACType));
+    int iRet = StringToInt(GetLocalString(oCreature, "NWNX!FUNCS!GETBASEAC"));
+    DeleteLocalString(oCreature, "NWNX!FUNCS!GETBASEAC");
     return iRet;
 }

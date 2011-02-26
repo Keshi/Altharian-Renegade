@@ -687,6 +687,8 @@ int GetTurningClassLevel(int bUndeadOnly = FALSE)
         nLevel += GetLevelByClass(CLASS_TYPE_BLACKGUARD)-2;
     if(GetLevelByClass(CLASS_TYPE_HOSPITALER)-2>0)
         nLevel += GetLevelByClass(CLASS_TYPE_HOSPITALER)-2;
+    if(GetLevelByClass(CLASS_TYPE_TEMPLAR)-3>0)
+        nLevel += GetLevelByClass(CLASS_TYPE_TEMPLAR)-3;
     //not undead turning classes
     if(!bUndeadOnly)
     {

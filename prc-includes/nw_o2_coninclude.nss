@@ -4095,7 +4095,7 @@ int GetNumberOfItems(int nTreasureType)
         }
         else
         if (nClass == CLASS_TYPE_ARCHIVIST || nClass == CLASS_TYPE_DRAGON_SHAMAN || nClass == CLASS_TYPE_FAVOURED_SOUL
-         || nClass == CLASS_TYPE_MYSTIC || nClass == CLASS_TYPE_WARMAGE)
+         || nClass == CLASS_TYPE_MYSTIC || nClass == CLASS_TYPE_WARMAGE || nClass == CLASS_TYPE_TEMPLAR)
         {
             //type 1
             nProbMisc = 25;
@@ -4652,7 +4652,8 @@ int nGetIsBaseClass(int nClass)
            nClass == CLASS_TYPE_WARLOCK ||
            nClass == CLASS_TYPE_WARMAGE ||
            nClass == CLASS_TYPE_WILDER ||
-           nClass == CLASS_TYPE_WITCH);
+           nClass == CLASS_TYPE_WITCH ||
+           nClass == CLASS_TYPE_TEMPLAR);
 }
 
 //::///////////////////////////////////////////////

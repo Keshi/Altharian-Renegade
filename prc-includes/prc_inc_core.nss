@@ -55,9 +55,6 @@ int GetBreakConcentrationCheck(object oConcentrator);
  */
 void CheckConcentrationOnEffect(object oCaster, int SpellID, object oTarget, int nDuration);
 
-// returns the spelllevel of nSpell as it can be cast by oCreature
-int PRCGetSpellLevel(object oCreature, int nSpell);
-
 // gets the spell level adjustment to the nMetaMagic, including boni from the Improved Metamagic (epic) feat
 int GetMetaMagicSpellLevelAdjustment(int nMetaMagic);
 

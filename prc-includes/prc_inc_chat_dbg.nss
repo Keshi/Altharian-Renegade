@@ -6,6 +6,7 @@
 #include "prc_alterations"
 #include "prc_inc_chat"
 #include "prc_inc_shifting" //For _prc_inc_EffectString, etc.
+#include "prc_inc_util"
 
 const string CMD_EXECUTE = "exec-ute";
 const string CMD_VARIABLE = "var-iable";
@@ -16,17 +17,16 @@ const string CMD_INFORMATION = "info-rmation";
 const string CMD_ABILITIES = "abil-ities";
 const string CMD_EFFECTS = "eff-ects";
 const string CMD_PROPERTIES = "prop-erties";
-const string CMD_SKILLS = "ski-lls";
-
-const string CMD_ABILITY = "abil-ity";
-    const string CMD_STR = "str-ength";
-    const string CMD_DEX = "dex-terity";
-    const string CMD_CON = "con-stitution";
-    const string CMD_INT = "int-elligence";
-    const string CMD_WIS = "wis-dom";
-    const string CMD_CHA = "cha-risma";
+const string CMD_SKILLS = "skil-ls";
 
 const string CMD_CHANGE = "change";
+    const string CMD_ABILITY = "abil-ity";
+        const string CMD_STR = "str-ength";
+        const string CMD_DEX = "dex-terity";
+        const string CMD_CON = "con-stitution";
+        const string CMD_INT = "int-elligence";
+        const string CMD_WIS = "wis-dom";
+        const string CMD_CHA = "cha-risma";
     const string CMD_LEVEL = "level";
     const string CMD_XP = "xp";
     const string CMD_GOLD = "gold";
@@ -38,6 +38,12 @@ const string CMD_SPAWN = "spawn";
     const string CMD_ITEM = "item";
 
 const string CMD_RELEVEL = "relevel";
+
+const string CMD_SPECIAL = "special";
+    const string CMD_REST = "rest";
+    const string CMD_HANDLE_FORCE_REST_1 = "handle";
+    const string CMD_HANDLE_FORCE_REST_2 = "force-d";
+    const string CMD_HANDLE_FORCE_REST_3 = "rest-ing";
 
 int Debug_ProcessChatCommand_Help(object oPC, string sCommand)
 {
@@ -117,55 +123,46 @@ int Debug_ProcessChatCommand_Help(object oPC, string sCommand)
             DoDebug("   Print the number of ranks that the PC has in each skill");
         DoDebug("");
     }
-        
-    if(GetStringMatchesAbbreviation(sCommandName, CMD_ABILITY) || nLevel == 1)
-    {
-        if (nLevel > 1)
-        {
-            bResult = TRUE;
-            DoDebug("=== DEBUG COMMAND: " + CMD_ABILITY);
-            DoDebug("");
-        }
-
-        DoDebug("~~" + CMD_ABILITY + " <ability-name> <value>");
-        if (nLevel > 1)
-        {
-            DoDebug("   Sets the specified ability to the given score     (requires NWNX funcs; requires DEBUG = TRUE)");
-            DoDebug("   <ability-name> can be: " + CMD_STR + ", " + CMD_DEX + ", " + CMD_CON + ", " + CMD_INT + ", " + CMD_WIS + ", " + CMD_CHA);
-        }
-        DoDebug("");
-    }
-        
+            
     if(GetStringMatchesAbbreviation(sCommandName, CMD_CHANGE) || nLevel == 1)
     {
         if (nLevel > 1)
         {
             bResult = TRUE;
-            DoDebug("=== DEBUG COMMAND: " + CMD_CHANGE + " <name> <ONE:to|by> <value>");
+            DoDebug("=== DEBUG COMMAND: " + CMD_CHANGE + " <what> <ONE:to|by> <value>");
             DoDebug("");
         }
 
-        DoDebug("~~" + CMD_CHANGE + " " + CMD_LEVEL + " " + CMD_TO + " <value>");
-        DoDebug("~~" + CMD_CHANGE + " " + CMD_LEVEL + " " + CMD_BY + " <amount>");
+        DoDebug("~~" + CMD_CHANGE + " " + CMD_LEVEL + " " + CMD_TO + " <value>     (requires DEBUG = TRUE)");
+        DoDebug("~~" + CMD_CHANGE + " " + CMD_LEVEL + " " + CMD_BY + " <amount>     (requires DEBUG = TRUE)");
         if (nLevel > 1)
         {
             DoDebug("   Adjust the PC's level as specified (must be 1-40)");
         }
         DoDebug("");
 
-        DoDebug("~~" + CMD_CHANGE + " " + CMD_XP + " " + CMD_TO + " <value>");
-        DoDebug("~~" + CMD_CHANGE + " " + CMD_XP + " " + CMD_BY + " <amount>");
+        DoDebug("~~" + CMD_CHANGE + " " + CMD_XP + " " + CMD_TO + " <value>     (requires DEBUG = TRUE)");
+        DoDebug("~~" + CMD_CHANGE + " " + CMD_XP + " " + CMD_BY + " <amount>     (requires DEBUG = TRUE)");
         if (nLevel > 1)
         {
             DoDebug("   Adjust the PC's XP as specified");
         }
         DoDebug("");
 
-        DoDebug("~~" + CMD_CHANGE + " " + CMD_GOLD + " " + CMD_TO + " <value>");
-        DoDebug("~~" + CMD_CHANGE + " " + CMD_GOLD + " " + CMD_BY + " <amount>");
+        DoDebug("~~" + CMD_CHANGE + " " + CMD_GOLD + " " + CMD_TO + " <value>     (requires DEBUG = TRUE)");
+        DoDebug("~~" + CMD_CHANGE + " " + CMD_GOLD + " " + CMD_BY + " <amount>     (requires DEBUG = TRUE)");
         if (nLevel > 1)
         {
             DoDebug("   Adjust the PC's gold as specified");
+        }
+        DoDebug("");
+    
+        DoDebug("~~" + CMD_CHANGE + " " + CMD_ABILITY + " <ability-name> " + CMD_TO + " <value>     (requires NWNX funcs; requires DEBUG = TRUE)");
+        DoDebug("~~" + CMD_CHANGE + " " + CMD_ABILITY + " <ability-name> " + CMD_BY + " <value>     (requires NWNX funcs; requires DEBUG = TRUE)");
+        if (nLevel > 1)
+        {
+            DoDebug("   Adjust the PC's abilities as specified");
+            DoDebug("   <ability-name> can be: " + CMD_STR + ", " + CMD_DEX + ", " + CMD_CON + ", " + CMD_INT + ", " + CMD_WIS + ", or " + CMD_CHA);
         }
         DoDebug("");
     }
@@ -204,12 +201,40 @@ int Debug_ProcessChatCommand_Help(object oPC, string sCommand)
             DoDebug("");
         }
 
-        DoDebug("~~" + CMD_SPAWN + " " + CMD_RELEVEL + " <level>");
+        DoDebug("~~" + CMD_RELEVEL + " <level>");
         if (nLevel > 1)
         {
             DoDebug("   Relevel the PC starting from the specified level.");
             DoDebug("   The final result is a PC with exactly the same XP as before,");
             DoDebug("   but with the feats, skills, etc. reselected starting with the specified level.");
+        }
+        DoDebug("");
+    }
+        
+    if(GetStringMatchesAbbreviation(sCommandName, CMD_SPECIAL) || nLevel == 1)
+    {
+        if (nLevel > 1)
+        {
+            bResult = TRUE;
+            DoDebug("=== DEBUG COMMAND: " + CMD_SPECIAL);
+            DoDebug("");
+        }
+
+        DoDebug("~~" + CMD_SPECIAL + " " + CMD_REST);
+        if (nLevel > 1)
+        {
+            DoDebug("   Instantly rest the PC     (requires DEBUG = TRUE).");
+        }
+
+        DoDebug("~~" + CMD_SPECIAL + " " + CMD_HANDLE_FORCE_REST_1 + " " + CMD_HANDLE_FORCE_REST_2 + " " + CMD_HANDLE_FORCE_REST_3);
+        if (nLevel > 1)
+        {
+            DoDebug("   Tell PRC that the module force rests PCs.");
+            DoDebug("   Forced resting restores feat uses and spell uses for Bioware spellbooks,");
+            DoDebug("   but does not restore spell uses for PRC conversation-based spellbooks,");
+            DoDebug("   and may cause problems with some other PRC features.");
+            DoDebug("   Start a detector that detects forced resting and fixes");
+            DoDebug("   these issues automatically.");
         }
         DoDebug("");
     }
@@ -422,7 +447,7 @@ int Debug_ProcessChatCommand(object oPC, string sCommand)
             DoDebug("=== INT: " + IntToString(GetAbilityScore(oPC, ABILITY_INTELLIGENCE, TRUE)) + " / " + IntToString(GetAbilityScore(oPC, ABILITY_INTELLIGENCE, FALSE)));
             DoDebug("=== WIS: " + IntToString(GetAbilityScore(oPC, ABILITY_WISDOM, TRUE)) + " / " + IntToString(GetAbilityScore(oPC, ABILITY_WISDOM, FALSE)));
             DoDebug("=== CHA: " + IntToString(GetAbilityScore(oPC, ABILITY_CHARISMA, TRUE)) + " / " + IntToString(GetAbilityScore(oPC, ABILITY_CHARISMA, FALSE)));
-            if (GetPersistantLocalInt(oPC, SHIFTER_ISSHIFTED_MARKER) && GetLocalInt(oPC, "PRC_NWNX_FUNCS"))
+            if (GetPersistantLocalInt(oPC, SHIFTER_ISSHIFTED_MARKER) && GetPRCSwitch(PRC_NWNX_FUNCS))
             {
                 int iSTR = GetPersistantLocalInt(oPC, "Shifting_NWNXSTRAdjust");
                 int iDEX = GetPersistantLocalInt(oPC, "Shifting_NWNXDEXAdjust");
@@ -511,41 +536,6 @@ int Debug_ProcessChatCommand(object oPC, string sCommand)
         }
         else
             DoDebug("Unrecognized information request: " + sInfoType);
-    }
-    else if (GetStringMatchesAbbreviation(sCommandName, CMD_ABILITY))
-    {
-        bResult = TRUE;
-        if (!DEBUG)
-            DoDebug("This command only works if DEBUG = TRUE");
-        else if (!GetLocalInt(oPC, "PRC_NWNX_FUNCS"))
-            DoDebug("This command only works if NWNX funcs is installed");
-        else
-        {
-            string sAbilityValue = GetStringWord(sCommand, 3);
-            int nAbilityValue = StringToInt(sAbilityValue);
-            if (sAbilityValue != IntToString(nAbilityValue))
-                DoDebug("Unrecognized ability value: " + sAbilityValue);
-            else if (nAbilityValue < 3 || nAbilityValue > 255)
-                DoDebug("Invalid ability value (must be between 3 and 255): " + sAbilityValue);
-            else
-            {
-                string sAbilityName = GetStringWord(sCommand, 2);
-                if (GetStringMatchesAbbreviation(sAbilityName, CMD_STR))
-                    _prc_inc_shifting_SetSTR(oPC, nAbilityValue);
-                else if (GetStringMatchesAbbreviation(sAbilityName, CMD_DEX))
-                    _prc_inc_shifting_SetDEX(oPC, nAbilityValue);
-                else if (GetStringMatchesAbbreviation(sAbilityName, CMD_CON))
-                    _prc_inc_shifting_SetCON(oPC, nAbilityValue);
-                else if (GetStringMatchesAbbreviation(sAbilityName, CMD_INT))
-                    _prc_inc_shifting_SetINT(oPC, nAbilityValue);
-                else if (GetStringMatchesAbbreviation(sAbilityName, CMD_WIS))
-                    _prc_inc_shifting_SetWIS(oPC, nAbilityValue);
-                else if (GetStringMatchesAbbreviation(sAbilityName, CMD_CHA))
-                    _prc_inc_shifting_SetCHA(oPC, nAbilityValue);
-                else
-                    DoDebug("Unrecognized ability name: " + sAbilityName);
-            }
-        }
     }
     else if (GetStringMatchesAbbreviation(sCommandName, CMD_CHANGE))
     {
@@ -636,6 +626,87 @@ int Debug_ProcessChatCommand(object oPC, string sCommand)
                         DoDebug("Unrecognized word: " + sChangeHow);
                 }
             }
+            else if (GetStringMatchesAbbreviation(sChangeWhat, CMD_ABILITY))
+            {
+                if (!GetPRCSwitch(PRC_NWNX_FUNCS))
+                    DoDebug("This command only works if NWNX funcs is installed");
+                else
+                {
+                    sChangeWhat = GetStringWord(sCommand, 3);
+                    sChangeHow = GetStringWord(sCommand, 4);
+                    sNumber = GetStringWord(sCommand, 5);
+                    nNumber = StringToInt(sNumber);
+                    if (sNumber != IntToString(nNumber))
+                        DoDebug("Unrecognized ability value: " + sNumber);
+                    else
+                    {
+                        if (GetStringMatchesAbbreviation(sChangeWhat, CMD_STR))
+                        {
+                            if (GetStringMatchesAbbreviation(sChangeHow, CMD_BY))
+                                nNumber += GetAbilityScore(oPC, ABILITY_STRENGTH, TRUE);
+                            if (nNumber < 3 || nNumber > 255)
+                                DoDebug("Invalid " + CMD_STR + " value (must be between 3 and 255): " + sChangeWhat);
+                            else
+                            {
+                                if (nNumber > 100 - 12)
+                                    DoDebug("NOTE: having a total " + CMD_STR + " above 100 can cause problems (the weight that you can carry goes to 0)");
+                                _prc_inc_shifting_SetSTR(oPC, nNumber);
+                            }
+                        }
+                        else if (GetStringMatchesAbbreviation(sChangeWhat, CMD_DEX))
+                        {
+                            if (GetStringMatchesAbbreviation(sChangeHow, CMD_BY))
+                                nNumber += GetAbilityScore(oPC, ABILITY_DEXTERITY, TRUE);
+                            if (nNumber < 3 || nNumber > 255)
+                                DoDebug("Invalid " + CMD_DEX + " value (must be between 3 and 255): " + sChangeWhat);
+                            else
+                                _prc_inc_shifting_SetDEX(oPC, nNumber);
+                        }
+                        else if (GetStringMatchesAbbreviation(sChangeWhat, CMD_CON))
+                        {
+                            if (GetStringMatchesAbbreviation(sChangeHow, CMD_BY))
+                                nNumber += GetAbilityScore(oPC, ABILITY_CONSTITUTION, TRUE);
+                            if (nNumber < 3 || nNumber > 255)
+                                DoDebug("Invalid " + CMD_CON + " value (must be between 3 and 255): " + sChangeWhat);
+                            else
+                                _prc_inc_shifting_SetCON(oPC, nNumber);
+                        }
+                        else if (GetStringMatchesAbbreviation(sChangeWhat, CMD_INT))
+                        {
+                            if (GetStringMatchesAbbreviation(sChangeHow, CMD_BY))
+                                nNumber += GetAbilityScore(oPC, ABILITY_INTELLIGENCE, TRUE);
+                            if (nNumber < 3 || nNumber > 255)
+                                DoDebug("Invalid " + CMD_INT + " value (must be between 3 and 255): " + sChangeWhat);
+                            else
+                                _prc_inc_shifting_SetINT(oPC, nNumber);
+                        }
+                        else if (GetStringMatchesAbbreviation(sChangeWhat, CMD_WIS))
+                        {
+                            if (GetStringMatchesAbbreviation(sChangeHow, CMD_BY))
+                                nNumber += GetAbilityScore(oPC, ABILITY_WISDOM, TRUE);
+                            if (nNumber < 3 || nNumber > 255)
+                                DoDebug("Invalid " + CMD_WIS + " value (must be between 3 and 255): " + sChangeWhat);
+                            else
+                                _prc_inc_shifting_SetWIS(oPC, nNumber);
+                        }
+                        else if (GetStringMatchesAbbreviation(sChangeWhat, CMD_CHA))
+                        {
+                            if (GetStringMatchesAbbreviation(sChangeHow, CMD_BY))
+                                nNumber += GetAbilityScore(oPC, ABILITY_CHARISMA, TRUE);
+                            if (nNumber < 3 || nNumber > 255)
+                                DoDebug("Invalid " + CMD_CHA + " value (must be between 3 and 255): " + sChangeWhat);
+                            else
+                                _prc_inc_shifting_SetCHA(oPC, nNumber);
+                        }
+                        else
+                            DoDebug("Unrecognized ability to change: " + sChangeWhat);
+                    }
+                }
+            }
+            else
+            {
+                DoDebug("Unrecognized value to change: " + sChangeWhat);
+            }
         }
     }
     else if (GetStringMatchesAbbreviation(sCommandName, CMD_SPAWN))
@@ -686,6 +757,27 @@ int Debug_ProcessChatCommand(object oPC, string sCommand)
                 SetXP(oPC, _prc_inc_LevelToXP(nNumber-1)); //Level down to the the level before the 1st we want to change
                 SetXP(oPC, nStartXP); //Level back up to our starting XP
             }
+        }
+    }
+    else if (GetStringMatchesAbbreviation(sCommandName, CMD_SPECIAL))
+    {
+        bResult = TRUE;
+        
+        string sSpecialCommandName = GetStringWord(sCommand, 2);
+
+        if (GetStringMatchesAbbreviation(sSpecialCommandName, CMD_REST))
+        {
+            if (!DEBUG)
+                DoDebug("This command only works if DEBUG = TRUE");
+            else
+                PRCForceRest(oPC);
+        }
+        else if (GetStringMatchesAbbreviation(sSpecialCommandName, CMD_HANDLE_FORCE_REST_1) && 
+            GetStringMatchesAbbreviation(GetStringWord(sCommand, 3), CMD_HANDLE_FORCE_REST_2) && 
+            GetStringMatchesAbbreviation(GetStringWord(sCommand, 4), CMD_HANDLE_FORCE_REST_3)
+            )
+        {
+            StartForcedRestDetector(oPC);
         }
     }
         

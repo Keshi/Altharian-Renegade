@@ -75,11 +75,11 @@
 
  /* This variable MUST be updated with every new version of the PRC!!! */
 
- const string PRC_VERSION                           = "PRC 3.4 rc1";
+ const string PRC_VERSION                           = "PRC 3.4";
 
  /* This variable MUST be updated every time 'assemble_spellbooks.bat' is run!!! */
 
- const string AMS_VERSION                           = "AMS_1.1";
+ const string AMS_VERSION                           = "AMS_1.3";
 
 /******************************************************************************\
 *                                  Spell switches                              *
@@ -797,6 +797,13 @@ const string PRC_PNP_FAMILIAR_FEEDING                = "PRC_PNP_FAMILIAR_FEEDING
  * be 'true' familiars (ie. can't possess PRC familiar)
  */
 const string PRC_FAMILIARS                           = "PRC_FAMILIARS";
+
+/**
+ * Enable spell sharing for all familiars and animal companions
+ * By default it's only enabled for pnp and bonded familiars, paladin
+ * mounts and healer celestial companions.
+ */
+const string PRC_ENABLE_SPELL_SHARING                 = "PRC_ENABLE_SPELL_SHARING";
 
 /**
  * This disables the 2 free spells wizards get at levelup

@@ -645,3 +645,15 @@ const int VFX_DUR_GLYPH_OF_WARDING_RED       = 793;
 const int VFX_DUR_GLYPH_OF_WARDING_VIOLET    = 794;
 const int VFX_DUR_GLYPH_OF_WARDING_WHITE     = 795;
 const int VFX_DUR_GLYPH_OF_WARDING_YELLOW    = 796;
+
+const int VFX_DUR_AURA_CHAOS     = 752;//violet
+const int VFX_DUR_AURA_EVIL      = 753;//red
+const int VFX_DUR_AURA_GOOD      = 754;//yellow
+const int VFX_DUR_AURA_LAW2      = 755;//blue
+const int VFX_DUR_AURA_UNDEAD    = 756;//?
+const int VFX_DUR_GR_AURA_CHAOS  = 757;
+const int VFX_DUR_GR_AURA_EVIL   = 758;
+const int VFX_DUR_GR_AURA_GOOD   = 759;
+const int VFX_DUR_GR_AURA_LAW    = 760;
+const int VFX_DUR_GR_AURA_UNDEAD = 761;
+const int VFX_DUR_DETECT         = 762;

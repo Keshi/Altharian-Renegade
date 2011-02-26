@@ -105,7 +105,7 @@ void AddBonusDomain(object oPC, int nDomain)
     }
 
     // If we're here, we know we have an open slot, so we add the domain into it.
-    FloatingTextStringOnCreature("You have " + IntToString(nDomain) + " as a bonus domain", oPC, FALSE);
+    FloatingTextStringOnCreature("You have " + GetStringByStrRef(StringToInt(Get2DACache("domains", "Name", nDomain))) + " as a bonus domain", oPC, FALSE);
     string sName = "PRCBonusDomain" + IntToString(nSlot);
     SetPersistantLocalInt(oPC, sName, nDomain);
 }
@@ -569,4 +569,14 @@ void BonusDomainRest(object oPC)
             SetLocalInt(oPC, "BonusDomainUsesPerDay" + GetDomainName(i2), GetDomainFeatUsesPerDay(GetDomainFeat(i2), oPC));
         }
     }
+}
+
+int DomainGetCasterLevel(object oPC)
+{
+    int nLevel = GetLevelByClass(CLASS_TYPE_CLERIC, oPC)
+               + GetLevelByClass(CLASS_TYPE_MYSTIC, oPC)
+               + GetLevelByClass(CLASS_TYPE_SHAMAN, oPC)
+               + GetLevelByClass(CLASS_TYPE_TEMPLAR, oPC);
+
+    return nLevel;
 }

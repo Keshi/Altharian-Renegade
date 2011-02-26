@@ -6,6 +6,7 @@ Prepared:
 Make cls_spgn_*.2da
 Make cls_spcr_*.2da
 Add cls_spgn_*.2da to classes.2da
+Add class entry in prc_casters.2da
 Add the spellbook feat (#1999) to cls_feat_*.2da at the appropriate level
 Add class to GetSpellbookTypeForClass() below
 Add class to GetAbilityScoreForClass() below
@@ -21,6 +22,7 @@ Make cls_spgn_*.2da
 Make cls_spkn_*.2da
 Make cls_spcr_*.2da
 Add cls_spkn_*.2da and cls_spgn_*.2da to classes.2da
+Add class entry in prc_casters.2da
 Add class to GetSpellbookTypeForClass() below
 Add class to GetAbilityScoreForClass() below
 Add class to bKnowsAllClassSpells() below if necessary
@@ -135,6 +137,7 @@ int GetSpellbookTypeForClass(int nClass)
         case CLASS_TYPE_SUBLIME_CHORD:
         case CLASS_TYPE_BEGUILER:
         case CLASS_TYPE_HARPER:
+        case CLASS_TYPE_TEMPLAR:
             return SPELLBOOK_TYPE_SPONTANEOUS;
         //outsider HD count as sorc for raks
         case CLASS_TYPE_OUTSIDER: {
@@ -190,6 +193,7 @@ int GetAbilityScoreForClass(int nClass, object oPC)
         case CLASS_TYPE_WARMAGE:
         case CLASS_TYPE_SUBLIME_CHORD:
         case CLASS_TYPE_HARPER:
+        case CLASS_TYPE_TEMPLAR:
             return GetAbilityScore(oPC, ABILITY_CHARISMA);
         //outsider HD count as sorc for raks
         case CLASS_TYPE_OUTSIDER: {

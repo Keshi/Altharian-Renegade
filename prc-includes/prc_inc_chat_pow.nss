@@ -31,7 +31,7 @@ int PowerAttack_ProcessChatCommand_Help(object oPC, string sCommand)
     
     if (nLevel == 1)
     {
-        DoDebug("=== PNP POWER ATTACK COMMANDS");
+        DoDebug("=== PRC POWER ATTACK COMMANDS");
         DoDebug("");
     }
 

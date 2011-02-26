@@ -35,6 +35,12 @@ const string PRC_DeletePRCLocalInts_Generation = "PRC_DeletePRCLocalInts_Generat
 const string PRC_EvalPRCFeats_Generation = "PRC_EvalPRCFeats_Generation";
 
 //////////////////////////////////////////////////
+/*                 Includes                     */
+//////////////////////////////////////////////////
+
+#include "prc_inc_util"
+
+//////////////////////////////////////////////////
 /*             Function prototypes              */
 //////////////////////////////////////////////////
 
@@ -223,8 +229,7 @@ void DelayedReApplyUnhealableAbilityDamage(int nExpectedGeneration, object oPC)
 
 void EvalPRCFeats(object oPC)
 {
-    int nGeneration = GetLocalInt(oPC, PRC_EvalPRCFeats_Generation) + 1;
-    if (nGeneration > 30000) nGeneration = 1;
+    int nGeneration = PRC_NextGeneration(GetLocalInt(oPC, PRC_EvalPRCFeats_Generation));
     if (DEBUG > 1) DoDebug("EvalPRCFeats Generation: " + IntToString(nGeneration));
     SetLocalInt(oPC, PRC_EvalPRCFeats_Generation, nGeneration);
 
@@ -320,7 +325,7 @@ void EvalPRCFeats(object oPC)
         ExecuteScript("race_appear", oPC);
 
     //permanent ability bonuses
-    if(GetLocalInt(oPC, "PRC_NWNX_FUNCS"))
+    if(GetPRCSwitch(PRC_NWNX_FUNCS))
         ExecuteScript("prc_nwnx_funcs", oPC);
 
     // Handle alternate caster types gaining new stuff
@@ -346,6 +351,7 @@ void EvalPRCFeats(object oPC)
        GetLevelByClass(CLASS_TYPE_ARCHIVIST,        oPC) ||
        GetLevelByClass(CLASS_TYPE_BEGUILER,         oPC) ||
        GetLevelByClass(CLASS_TYPE_HARPER,           oPC) ||
+       GetLevelByClass(CLASS_TYPE_TEMPLAR,          oPC) ||
        // Truenaming
        GetLevelByClass(CLASS_TYPE_TRUENAMER,        oPC) ||
        // Tome of Battle
@@ -488,8 +494,7 @@ void DelayedTemplateSLAs(int nExpectedGeneration, object oPC)
 
 void DeletePRCLocalInts(object oSkin)
 {
-    int nGeneration = GetLocalInt(oSkin, PRC_DeletePRCLocalInts_Generation) + 1;
-    if (nGeneration > 30000) nGeneration = 1;
+    int nGeneration = PRC_NextGeneration(GetLocalInt(oSkin, PRC_DeletePRCLocalInts_Generation));
     if (DEBUG > 1) DoDebug("DeletePRCLocalInts Generation: " + IntToString(nGeneration));
     SetLocalInt(oSkin, PRC_DeletePRCLocalInts_Generation, nGeneration);
 
@@ -717,8 +722,7 @@ void DeletePRCLocalInts(object oSkin)
 
 void ScrubPCSkin(object oPC, object oSkin)
 {
-    int nGeneration = GetLocalInt(oPC, PRC_ScrubPCSkin_Generation) + 1;
-    if (nGeneration > 30000) nGeneration = 1;
+    int nGeneration = PRC_NextGeneration(GetLocalInt(oPC, PRC_ScrubPCSkin_Generation));
     if (DEBUG > 1) DoDebug("ScrubPCSkin Generation: " + IntToString(nGeneration));
     SetLocalInt(oPC, PRC_ScrubPCSkin_Generation, nGeneration);
 
@@ -794,8 +798,9 @@ int BlastInfidelOrFaithHeal(object oCaster, object oTarget, int iEnergyType, int
     //If the target is undead and damage type is negative
     //or if the target is living and damage type is positive
     //then we're healing.  Otherwise, we're harming.
-    int iHeal = ( iEnergyType == DAMAGE_TYPE_NEGATIVE && MyPRCGetRacialType(oTarget) == RACIAL_TYPE_UNDEAD ) ||
-                ( iEnergyType == DAMAGE_TYPE_POSITIVE && MyPRCGetRacialType(oTarget) != RACIAL_TYPE_UNDEAD );
+    int iTombTainted = GetHasFeat(FEAT_TOMB_TAINTED_SOUL, oTarget) && GetAlignmentGoodEvil(oTarget) != ALIGNMENT_GOOD;
+    int iHeal = ( iEnergyType == DAMAGE_TYPE_NEGATIVE && (MyPRCGetRacialType(oTarget) == RACIAL_TYPE_UNDEAD || iTombTainted)) ||
+                ( iEnergyType == DAMAGE_TYPE_POSITIVE && MyPRCGetRacialType(oTarget) != RACIAL_TYPE_UNDEAD && !iTombTainted);
     int iRetVal = FALSE;
     int iAlignDif = CompareAlignment(oCaster, oTarget);
     string sFeedback = "";

@@ -362,6 +362,10 @@ const int PRC_TAIL_TYPE_DRAGON_GREEN    = 11;
 const int PRC_TAIL_TYPE_DRAGON_RED      = 12;
 const int PRC_TAIL_TYPE_DRAGON_WHITE    = 13;
 
-//Morninglord 
+//Morninglord
 const int MOD_DAWN_START_HOUR           = 6;
 const float INTERVAL_BLESSING_OF_DAWN   = 15.0;
+
+//Healer
+const int ASSOCIATE_TYPE_CELESTIALCOMPANION = 9;
+

@@ -368,6 +368,7 @@ const int FEAT_PRACTICED_SPELLCASTER_ARCHIVIST         = 24256;
 const int FEAT_PRACTICED_SPELLCASTER_BEGUILER          = 24257;
 const int FEAT_PRACTICED_SPELLCASTER_SHUGENJA          = 24258;
 const int FEAT_PRACTICED_SPELLCASTER_HARPER            = 24259;
+const int FEAT_PRACTICED_SPELLCASTER_TEMPLAR           = 24260;
 
 const int FEAT_PRACTICED_MANIFESTER_PSION              = 24250;
 const int FEAT_PRACTICED_MANIFESTER_PSYWAR             = 24251;
@@ -3121,6 +3122,7 @@ const int FEAT_MAXIMIZE_SPELL_ABILITY       = 23599;
 const int FEAT_QUICKEN_SPELL_ABILITY        = 23600;
 
 const int FEAT_BATTLE_CASTER                = 23589;
+const int FEAT_TOMB_TAINTED_SOUL            = 23555;
 
 //Archivist
 const int FEAT_LORE_MASTERY                 = 23580;

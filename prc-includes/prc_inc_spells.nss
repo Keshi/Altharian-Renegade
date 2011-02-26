@@ -1444,6 +1444,9 @@ int GetCasterLvl(int iTypeSpell, object oCaster = OBJECT_SELF)
         case CLASS_TYPE_ARCHIVIST:
             return GetCasterLvlDivineFull(CLASS_TYPE_ARCHIVIST, oCaster);
 
+        case CLASS_TYPE_TEMPLAR:
+            return GetCasterLvlDivineFull(CLASS_TYPE_TEMPLAR, oCaster);
+
         default:
             break;
     }
@@ -1713,7 +1716,6 @@ int PRCMaximizeOrEmpower(int nDice, int nNumberOfDice, int nMeta, int nBonus = 0
 {
     int i = 0;
     int nDamage = 0;
-    int nChannel = GetLocalInt(OBJECT_SELF,"spellswd_aoe");
     int nFeat = GetLocalInt(OBJECT_SELF,"PRC_SPELL_METAMAGIC");
     int nDiceDamage;
     for (i=1; i<=nNumberOfDice; i++)
@@ -2162,8 +2164,7 @@ void PRCDecrementRemainingSpellUses(object oCreature, int nSpell)
 //
 //  This function determines if spell damage is elemental
 //
-int
-IsSpellDamageElemental(int nDamageType)
+int IsSpellDamageElemental(int nDamageType)
 {
     return nDamageType == DAMAGE_TYPE_ACID
         || nDamageType == DAMAGE_TYPE_COLD
@@ -2176,8 +2177,7 @@ IsSpellDamageElemental(int nDamageType)
 //  This function converts spell damage into the correct type
 //  TODO: Change the name to consistent (large churn project).
 //
-int
-ChangedElementalDamage(object oCaster, int nDamageType){
+int ChangedElementalDamage(object oCaster, int nDamageType){
     // Check if an override is set
     int nNewType = GetLocalInt(oCaster, "archmage_mastery_elements");
 
@@ -2188,21 +2188,35 @@ ChangedElementalDamage(object oCaster, int nDamageType){
     return nNewType;
 }
 
+//used in scripts after ChangedElementalDamage() to determine saving throw type
+int ChangedSaveType(int nDamageType)
+{
+    switch(nDamageType)
+    {
+        case DAMAGE_TYPE_ACID:       return SAVING_THROW_TYPE_ACID;
+        case DAMAGE_TYPE_COLD:       return SAVING_THROW_TYPE_COLD;
+        case DAMAGE_TYPE_ELECTRICAL: return SAVING_THROW_TYPE_ELECTRICITY;
+        case DAMAGE_TYPE_FIRE:       return SAVING_THROW_TYPE_FIRE;
+        case DAMAGE_TYPE_SONIC:      return SAVING_THROW_TYPE_SONIC;
+        case DAMAGE_TYPE_DIVINE:     return SAVING_THROW_TYPE_DIVINE;
+        case DAMAGE_TYPE_NEGATIVE:   return SAVING_THROW_TYPE_NEGATIVE;
+        case DAMAGE_TYPE_POSITIVE:   return SAVING_THROW_TYPE_POSITIVE;
+    }
+    return SAVING_THROW_TYPE_NONE;//if it ever gets here, than the function was used incorrectly
+}
+
 // this is possibly used in variations elsewhere
 int PRCGetElementalDamageType(int nDamageType, object oCaster = OBJECT_SELF)
 {
-    // Only apply change to elemental damages.
-    int nOldDamageType = nDamageType;
-    switch (nDamageType)
+    switch(nDamageType)
     {
-    case DAMAGE_TYPE_ACID:
-    case DAMAGE_TYPE_COLD:
-    case DAMAGE_TYPE_ELECTRICAL:
-    case DAMAGE_TYPE_FIRE:
-    case DAMAGE_TYPE_SONIC:
-        nDamageType = ChangedElementalDamage(oCaster, nDamageType);
+        case DAMAGE_TYPE_ACID:
+        case DAMAGE_TYPE_COLD:
+        case DAMAGE_TYPE_ELECTRICAL:
+        case DAMAGE_TYPE_FIRE:
+        case DAMAGE_TYPE_SONIC:
+            nDamageType = ChangedElementalDamage(oCaster, nDamageType);
     }
-
     return nDamageType;
 }
 
@@ -2244,7 +2258,7 @@ effect PRCEffectDamage(object oTarget, int nDamageAmount, int nDamageType=DAMAGE
         }
     }
 
-   //Bane Magic
+    //Bane Magic
     int nRace = MyPRCGetRacialType(oTarget);
     int nFeat = -1;
 
@@ -2424,11 +2438,11 @@ effect PRCCreateProtectionFromAlignmentLink(int nAlignment, int nPower = 1)
 
     int nFinal = nPower * 2;
     effect eAC = EffectACIncrease(nFinal, AC_DEFLECTION_BONUS);
-    eAC = VersusAlignmentEffect(eAC, nAlignmentLC, nAlignmentGE);
+           eAC = VersusAlignmentEffect(eAC, nAlignmentLC, nAlignmentGE);
     effect eSave = EffectSavingThrowIncrease(SAVING_THROW_ALL, nFinal);
-    eSave = VersusAlignmentEffect(eSave,nAlignmentLC, nAlignmentGE);
+           eSave = VersusAlignmentEffect(eSave, nAlignmentLC, nAlignmentGE);
     effect eImmune = EffectImmunity(IMMUNITY_TYPE_MIND_SPELLS);
-    eImmune = VersusAlignmentEffect(eImmune,nAlignmentLC, nAlignmentGE);
+           eImmune = VersusAlignmentEffect(eImmune, nAlignmentLC, nAlignmentGE);
 
     effect eDur2 = EffectVisualEffect(VFX_DUR_CESSATE_POSITIVE);
     effect eLink = EffectLinkEffects(eImmune, eSave);

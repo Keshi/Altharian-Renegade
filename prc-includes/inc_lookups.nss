@@ -224,6 +224,7 @@ void MakeLookupLoopMaster()
     DelayCommand(14.2, MakeLookupLoop(CLASS_TYPE_ARCHIVIST,          0, PRCGetFileEnd("cls_spell_archv"),  "SpellID", "RealSpellID", "GetPowerFromSpellID"));
     DelayCommand(14.3, MakeLookupLoop(CLASS_TYPE_BEGUILER,           0, PRCGetFileEnd("cls_spell_beguil"), "SpellID", "RealSpellID", "GetPowerFromSpellID"));
     DelayCommand(14.5, MakeLookupLoop(CLASS_TYPE_HARPER,             0, PRCGetFileEnd("cls_spell_harper"), "SpellID", "RealSpellID", "GetPowerFromSpellID"));
+    DelayCommand(15.0, MakeLookupLoop(CLASS_TYPE_TEMPLAR,            0, PRCGetFileEnd("cls_spell_templ"),  "SpellID", "RealSpellID", "GetPowerFromSpellID"));
 
     DelayCommand(2.6, MakeLookupLoop(CLASS_TYPE_BLACKGUARD,          0, PRCGetFileEnd("cls_spell_blkgrd"), "SpellID", "", "GetRowFromSpellID"));
     DelayCommand(2.7, MakeLookupLoop(CLASS_TYPE_ANTI_PALADIN,        0, PRCGetFileEnd("cls_spell_antipl"), "SpellID", "", "GetRowFromSpellID"));
@@ -254,6 +255,7 @@ void MakeLookupLoopMaster()
     DelayCommand(16.3, MakeLookupLoop(CLASS_TYPE_ARCHIVIST,          0, PRCGetFileEnd("cls_spell_archv"),  "SpellID", "", "GetRowFromSpellID"));
     DelayCommand(16.7, MakeLookupLoop(CLASS_TYPE_BEGUILER,           0, PRCGetFileEnd("cls_spell_beguil"), "SpellID", "", "GetRowFromSpellID"));
     DelayCommand(17.1, MakeLookupLoop(CLASS_TYPE_HARPER,             0, PRCGetFileEnd("cls_spell_harper"), "SpellID", "", "GetRowFromSpellID"));
+    DelayCommand(17.5, MakeLookupLoop(CLASS_TYPE_TEMPLAR,            0, PRCGetFileEnd("cls_spell_templ"),  "SpellID", "", "GetRowFromSpellID"));
 
     DelayCommand(4.1, MakeSpellbookLevelLoop(CLASS_TYPE_BLACKGUARD,          0, PRCGetFileEnd("cls_spell_blkgrd"), "SpellLvl", "Level", "1"));
     DelayCommand(4.1, MakeSpellbookLevelLoop(CLASS_TYPE_BLACKGUARD,          0, PRCGetFileEnd("cls_spell_blkgrd"), "SpellLvl", "Level", "2"));
@@ -437,6 +439,16 @@ void MakeLookupLoopMaster()
     DelayCommand(19.7, MakeSpellbookLevelLoop(CLASS_TYPE_HARPER,             0, PRCGetFileEnd("cls_spell_harper"), "SpellLvl", "Level", "1"));
     DelayCommand(19.8, MakeSpellbookLevelLoop(CLASS_TYPE_HARPER,             0, PRCGetFileEnd("cls_spell_harper"), "SpellLvl", "Level", "2"));
     DelayCommand(19.9, MakeSpellbookLevelLoop(CLASS_TYPE_HARPER,             0, PRCGetFileEnd("cls_spell_harper"), "SpellLvl", "Level", "3"));
+    DelayCommand(16.1, MakeSpellbookLevelLoop(CLASS_TYPE_TEMPLAR,            0, PRCGetFileEnd("cls_spell_templ"),  "SpellLvl", "Level", "0"));
+    DelayCommand(16.2, MakeSpellbookLevelLoop(CLASS_TYPE_TEMPLAR,            0, PRCGetFileEnd("cls_spell_templ"),  "SpellLvl", "Level", "1"));
+    DelayCommand(16.3, MakeSpellbookLevelLoop(CLASS_TYPE_TEMPLAR,            0, PRCGetFileEnd("cls_spell_templ"),  "SpellLvl", "Level", "2"));
+    DelayCommand(16.4, MakeSpellbookLevelLoop(CLASS_TYPE_TEMPLAR,            0, PRCGetFileEnd("cls_spell_templ"),  "SpellLvl", "Level", "3"));
+    DelayCommand(16.5, MakeSpellbookLevelLoop(CLASS_TYPE_TEMPLAR,            0, PRCGetFileEnd("cls_spell_templ"),  "SpellLvl", "Level", "4"));
+    DelayCommand(16.6, MakeSpellbookLevelLoop(CLASS_TYPE_TEMPLAR,            0, PRCGetFileEnd("cls_spell_templ"),  "SpellLvl", "Level", "5"));
+    DelayCommand(16.7, MakeSpellbookLevelLoop(CLASS_TYPE_TEMPLAR,            0, PRCGetFileEnd("cls_spell_templ"),  "SpellLvl", "Level", "6"));
+    DelayCommand(16.8, MakeSpellbookLevelLoop(CLASS_TYPE_TEMPLAR,            0, PRCGetFileEnd("cls_spell_templ"),  "SpellLvl", "Level", "7"));
+    DelayCommand(16.9, MakeSpellbookLevelLoop(CLASS_TYPE_TEMPLAR,            0, PRCGetFileEnd("cls_spell_templ"),  "SpellLvl", "Level", "8"));
+    DelayCommand(17.0, MakeSpellbookLevelLoop(CLASS_TYPE_TEMPLAR,            0, PRCGetFileEnd("cls_spell_templ"),  "SpellLvl", "Level", "9"));
 
     DelayCommand(3.0, MakeSpellIDLoop(CLASS_TYPE_BLACKGUARD,            0, PRCGetFileEnd("cls_spell_blkgrd"), "RealSpellID", "GetRowFromRealSpellID"));
     DelayCommand(3.1, MakeSpellIDLoop(CLASS_TYPE_ANTI_PALADIN,          0, PRCGetFileEnd("cls_spell_antipl"), "RealSpellID", "GetRowFromRealSpellID"));
@@ -467,6 +479,7 @@ void MakeLookupLoopMaster()
     DelayCommand(5.2, MakeSpellIDLoop(CLASS_TYPE_ARCHIVIST,             0, PRCGetFileEnd("cls_spell_archv"),  "RealSpellID", "GetRowFromRealSpellID"));
     DelayCommand(5.3, MakeSpellIDLoop(CLASS_TYPE_BEGUILER,              0, PRCGetFileEnd("cls_spell_beguil"), "RealSpellID", "GetRowFromRealSpellID"));
     DelayCommand(5.3, MakeSpellIDLoop(CLASS_TYPE_HARPER,                0, PRCGetFileEnd("cls_spell_harper"), "RealSpellID", "GetRowFromRealSpellID"));
+    DelayCommand(5.3, MakeSpellIDLoop(CLASS_TYPE_TEMPLAR,               0, PRCGetFileEnd("cls_spell_templ"),  "RealSpellID", "GetRowFromRealSpellID"));
     }
 
 void MakeSpellbookLevelLoop(int nClass, int nMin, int nMax, string sVarNameBase,

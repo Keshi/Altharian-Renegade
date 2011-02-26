@@ -521,6 +521,7 @@ int GetIsDivineClass(int nClass, object oCaster = OBJECT_SELF)
             nClass==CLASS_TYPE_SLAYER_OF_DOMIEL ||
             nClass==CLASS_TYPE_SOHEI ||
             nClass==CLASS_TYPE_SOLDIER_OF_LIGHT ||
+            nClass==CLASS_TYPE_TEMPLAR ||
             nClass==CLASS_TYPE_VASSAL ||
             nClass==CLASS_TYPE_VIGILANT);
 }
@@ -849,6 +850,7 @@ int PracticedSpellcasting(object oCaster, int iCastingClass, int iCastingLevels)
         case CLASS_TYPE_BEGUILER:            nFeat = FEAT_PRACTICED_SPELLCASTER_BEGUILER;            break;
         case CLASS_TYPE_SHUGENJA:            nFeat = FEAT_PRACTICED_SPELLCASTER_SHUGENJA;            break;
         case CLASS_TYPE_HARPER:              nFeat = FEAT_PRACTICED_SPELLCASTER_HARPER;              break;
+        case CLASS_TYPE_TEMPLAR:             nFeat = FEAT_PRACTICED_SPELLCASTER_TEMPLAR;             break;
         default: return 0;
     }
 

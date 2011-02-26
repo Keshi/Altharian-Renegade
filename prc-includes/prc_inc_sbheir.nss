@@ -3,6 +3,7 @@
 //:: prc_inc_sbheir
 //::///////////////////////////////////////////////
 
+#include "prc_inc_util"
 #include "inc_item_props"
 
 const int SHINING_BLADE_LEVEL_SHOCK = 1;
@@ -10,6 +11,8 @@ const int SHINING_BLADE_LEVEL_HOLY = 2;
 const int SHINING_BLADE_LEVEL_BRILLIANT = 3;
 
 const string PRC_ShiningBlade_Generation = "PRC_ShiningBlade_Generation";
+const string PRC_ShiningBlade_Level = "PRC_ShiningBladeLevel";
+const string PRC_ShiningBlade_Duration = "PRC_ShiningBladeDuration";
 
 void ShiningBlade_RemoveProperties(object oWeapon, int nLevel)
 {
@@ -135,8 +138,8 @@ void ShiningBlade_ExpireBonuses(object oPC, int nGeneration, int nLevel)
         if (DEBUG) DoDebug("Expiring Shining Blade bonuses");
 
         //Zero out variables so that equipping a weapon doesn't reapply the expired bonuses
-        SetLocalInt(oPC, "ShiningBladeDuration", 0);
-        SetLocalInt(oPC, "ShiningBladeLevel", 0);
+        SetLocalInt(oPC, PRC_ShiningBlade_Duration, 0);
+        SetLocalInt(oPC, PRC_ShiningBlade_Level, 0);
 
         //Expire bonsues on wielded weapons
         object oOnHandWeapon = GetItemInSlot(INVENTORY_SLOT_RIGHTHAND, oPC);
@@ -160,8 +163,7 @@ void ShiningBlade_ExpireBonuses(object oPC, int nGeneration, int nLevel)
 
 void ShiningBlade_ScheduleBonusExpiration(object oPC, int nDuration, int nLevel)
 {
-    int nGeneration = GetLocalInt(oPC, PRC_ShiningBlade_Generation) + 1;
-    if (nGeneration > 30000) nGeneration = 1;
+    int nGeneration = PRC_NextGeneration(GetLocalInt(oPC, PRC_ShiningBlade_Generation));
     SetLocalInt(oPC, PRC_ShiningBlade_Generation, nGeneration);
     DelayCommand(RoundsToSeconds(nDuration), ShiningBlade_ExpireBonuses(oPC, nGeneration, nLevel));
 }

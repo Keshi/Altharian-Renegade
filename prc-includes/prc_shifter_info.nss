@@ -132,7 +132,20 @@ struct _prc_inc_ability_info_struct _prc_inc_shifter_GetAbilityInfo(object oTemp
 
     rInfoStruct.nItemDeltaSTR = rInfoStruct.nDeltaSTR + rInfoStruct.nItemSTR;
     if (bFuncs)
-        rInfoStruct.nExtraSTR = 0; //NWNX boosts aren't capped, so we don't need to handle caps
+    {
+        //NWNX boosts aren't capped, so we don't need to handle caps, generally speaking. 
+        rInfoStruct.nExtraSTR = 0; 
+
+        //However, due to a Bioware issue, if STR, including bonuses, goes greater than 100,
+        //the amount of weight the PC can carry drops to 0. So, cap STR to make sure this doesn't happen.
+        const int NWNX_STR_LIMIT = 100 - MAX_BONUS;
+        if (rInfoStruct.nTemplateSTR > NWNX_STR_LIMIT)
+        {
+            rInfoStruct.nExtraSTR = rInfoStruct.nTemplateSTR - NWNX_STR_LIMIT;
+            rInfoStruct.nTemplateSTR = NWNX_STR_LIMIT;
+            rInfoStruct.nDeltaSTR = rInfoStruct.nTemplateSTR - rInfoStruct.nShifterSTR;
+        }
+    }
     else if (rInfoStruct.nItemDeltaSTR > MAX_BONUS)
         rInfoStruct.nExtraSTR = rInfoStruct.nItemDeltaSTR - MAX_BONUS;
     else if(rInfoStruct.nItemDeltaSTR < -MAX_PENALTY)

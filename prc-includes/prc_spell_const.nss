@@ -1290,3 +1290,4 @@ const int SPELL_ETERNAL_SLEEP                       = 0;
 const int SPELL_TRANSPORT_VIA_PLANTS                = 0;
 const int SPELL_TRANSPORT_VIA_PLANTS_PARTY          = 0;
 const int SPELL_GREATER_BESTOW_CURSE                = 0;
+const int SPELL_MASS_AID                            = 0;

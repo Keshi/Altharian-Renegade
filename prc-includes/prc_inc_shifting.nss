@@ -585,6 +585,41 @@ void _prc_inc_shifting_CopyFeats(object oShifter, object oTemplate, object oShif
     }
 }
 
+void _prc_inc_shifting_AddCreatureWeaponFeats(object oShifter, object oShifterHide)
+{
+    //If PC has unarmed feats, give them the corresponding creature feats when shifted
+    if (GetHasFeat(FEAT_WEAPON_FOCUS_UNARMED_STRIKE, oShifter))
+        IPSafeAddItemProperty(oShifterHide, ItemPropertyBonusFeat(IP_CONST_FEAT_WeapFocCreature), 0.0, X2_IP_ADDPROP_POLICY_KEEP_EXISTING);
+    if (GetHasFeat(FEAT_WEAPON_SPECIALIZATION_UNARMED_STRIKE, oShifter))
+        IPSafeAddItemProperty(oShifterHide, ItemPropertyBonusFeat(IP_CONST_FEAT_WeapSpecCreature), 0.0, X2_IP_ADDPROP_POLICY_KEEP_EXISTING);
+    if (GetHasFeat(FEAT_EPIC_WEAPON_FOCUS_UNARMED, oShifter))
+        IPSafeAddItemProperty(oShifterHide, ItemPropertyBonusFeat(IP_CONST_FEAT_WeapEpicFocCreature), 0.0, X2_IP_ADDPROP_POLICY_KEEP_EXISTING);
+    if (GetHasFeat(FEAT_EPIC_WEAPON_SPECIALIZATION_UNARMED, oShifter))
+        IPSafeAddItemProperty(oShifterHide, ItemPropertyBonusFeat(IP_CONST_FEAT_WeapEpicSpecCreature), 0.0, X2_IP_ADDPROP_POLICY_KEEP_EXISTING);
+    if (GetHasFeat(FEAT_IMPROVED_CRITICAL_UNARMED_STRIKE, oShifter))
+        IPSafeAddItemProperty(oShifterHide, ItemPropertyBonusFeat(IP_CONST_FEAT_ImpCritCreature), 0.0, X2_IP_ADDPROP_POLICY_KEEP_EXISTING);
+    if (GetHasFeat(FEAT_EPIC_OVERWHELMING_CRITICAL_UNARMED, oShifter))
+        IPSafeAddItemProperty(oShifterHide, ItemPropertyBonusFeat(IP_CONST_FEAT_OVERCRITICAL_CREATURE), 0.0, X2_IP_ADDPROP_POLICY_KEEP_EXISTING);
+    if (GetHasFeat(FEAT_EPIC_DEVASTATING_CRITICAL_UNARMED, oShifter))
+        IPSafeAddItemProperty(oShifterHide, ItemPropertyBonusFeat(IP_CONST_FEAT_DEVCRITICAL_CREATURE), 0.0, X2_IP_ADDPROP_POLICY_KEEP_EXISTING);
+
+    //If PC has creature feats, give them the corresponding unarmed feats when shifted
+    if (GetHasFeat(FEAT_WEAPON_FOCUS_CREATURE, oShifter))
+        IPSafeAddItemProperty(oShifterHide, ItemPropertyBonusFeat(IP_CONST_FEAT_WEAPON_FOCUS_UNARMED_STRIKE), 0.0, X2_IP_ADDPROP_POLICY_KEEP_EXISTING);
+    if (GetHasFeat(FEAT_WEAPON_SPECIALIZATION_CREATURE, oShifter))
+        IPSafeAddItemProperty(oShifterHide, ItemPropertyBonusFeat(IP_CONST_FEAT_WEAPON_SPECIALIZATION_UNARMED_STRIKE), 0.0, X2_IP_ADDPROP_POLICY_KEEP_EXISTING);
+    if (GetHasFeat(FEAT_EPIC_WEAPON_FOCUS_CREATURE, oShifter))
+        IPSafeAddItemProperty(oShifterHide, ItemPropertyBonusFeat(IP_CONST_FEAT_EPIC_WEAPON_FOCUS_UNARMED_STRIKE), 0.0, X2_IP_ADDPROP_POLICY_KEEP_EXISTING);
+    if (GetHasFeat(FEAT_EPIC_WEAPON_SPECIALIZATION_CREATURE, oShifter))
+        IPSafeAddItemProperty(oShifterHide, ItemPropertyBonusFeat(IP_CONST_FEAT_EPIC_WEAPON_SPECIALIZATION_UNARMED_STRIKE), 0.0, X2_IP_ADDPROP_POLICY_KEEP_EXISTING);
+    if (GetHasFeat(FEAT_IMPROVED_CRITICAL_CREATURE, oShifter))
+        IPSafeAddItemProperty(oShifterHide, ItemPropertyBonusFeat(IP_CONST_FEAT_IMPROVED_CRITICAL_UNARMED), 0.0, X2_IP_ADDPROP_POLICY_KEEP_EXISTING);
+    if (GetHasFeat(FEAT_EPIC_OVERWHELMING_CRITICAL_CREATURE, oShifter))
+        IPSafeAddItemProperty(oShifterHide, ItemPropertyBonusFeat(IP_CONST_FEAT_EPIC_OVERWHELMING_CRITICAL_UNARMED), 0.0, X2_IP_ADDPROP_POLICY_KEEP_EXISTING);
+    if (GetHasFeat(FEAT_EPIC_DEVASTATING_CRITICAL_CREATURE, oShifter))
+        IPSafeAddItemProperty(oShifterHide, ItemPropertyBonusFeat(IP_CONST_FEAT_EPIC_DEVASTATING_CRITICAL_UNARMED), 0.0, X2_IP_ADDPROP_POLICY_KEEP_EXISTING);
+}
+
 /** Internal function.
  * Determines if the given resref has already been stored in the
  * templates array of the given creature's shifting list for
@@ -717,6 +752,7 @@ void _prc_inc_shifting_ApplyStatPenalties(object oCreature,  object oPropertyHol
         DelayCommand(0.0, SetCompositeBonus(oPropertyHolder, "Shifting_AbilityAdjustmentCONPenalty", -nDeltaCON, ITEM_PROPERTY_DECREASED_ABILITY_SCORE, IP_CONST_ABILITY_CON));
 }
 
+//TODO: use ForceEquip() in inc_utility instead?
 void SafeEquipItem(object oShifter, object oItem, int nSlot, float fDelay = 1.0f)
 {
     if (GetIsObjectValid(oItem) && GetItemInSlot(nSlot, oShifter) != oItem)
@@ -816,7 +852,6 @@ void _prc_inc_shifting_RemoveSpellEffects_CastSpellAtObject(object oShifter, int
                 case EFFECT_TYPE_SKILL_DECREASE:
                 case EFFECT_TYPE_AC_INCREASE:
                 case EFFECT_TYPE_AC_DECREASE:
-                case EFFECT_TYPE_VISUALEFFECT:
                     RemoveEffect(oShifter, eTest);
                     break;
             
@@ -1052,6 +1087,7 @@ void _prc_inc_shifting_ApplyTemplate(object oShifter, int nIndex, int nShifterTy
         oShifterPropertyHolder1 = GetPCSkin(oShifter);
     }
     int bSkinScrubbed = !GetLocalInt(oShifterPropertyHolder1, "PRC_SHIFTER_TEMPLATE_APPLIED");
+        //TODO: Use PRC_ScrubPCSkin_Generation instead?
     SetLocalInt(oShifterPropertyHolder1, "PRC_SHIFTER_TEMPLATE_APPLIED", TRUE); //This gets cleared by DeletePRCLocalInts (after sleeping, etc.).
 
     int bApplyProperties1 = bSkinScrubbed;
@@ -1522,6 +1558,9 @@ void _prc_inc_shifting_ApplyTemplate(object oShifter, int nIndex, int nShifterTy
             DelayCommand(0.0f, _prc_inc_shifting_CopyFeats(oShifter, oTemplate, oShifterPropertyHolder1, i, i+CHUNK_SIZE));
             i += CHUNK_SIZE;
         }
+        
+        DelayCommand(0.1f, _prc_inc_shifting_AddCreatureWeaponFeats(oShifter, oShifterPropertyHolder1));
+
         DelayCommand(1.0f, DoWeaponsEquip(oShifter)); //Since our weapon proficiency feats may have changed, reapply weapon feat simulations
             //TODO: Handle armor also?
             //TODO: Should actually unequip weapon if incorrect size, armor if not proficient (but this might be a pain).
@@ -2272,22 +2311,20 @@ void _UpdateStoredTemplateInfo(object oShifter, int nShifterType, int nStart, in
     }
 }
 
-void UpdateStoredTemplateInfo(object oShifter, int nShifterType)
+void UpdateStoredTemplateInfo(object oShifter, int nShifterType, int nStart = 0)
 {
-    string sRacialTypeArray  = SHIFTER_RACIALTYPE_ARRAY + IntToString(nShifterType);
+    string sRacialTypeArray = SHIFTER_RACIALTYPE_ARRAY + IntToString(nShifterType);
     if(!persistant_array_exists(oShifter, sRacialTypeArray))
         persistant_array_create(oShifter, sRacialTypeArray);
 
+    const int CHUNK_SIZE = 5;
     int nArraySize = GetNumberOfStoredTemplates(oShifter, nShifterType);
-    int nChunkSize = 5;
-    float fDelayLength = 1.0f;
-    int i = 0;
-    int j = 0;
-    while(i < nArraySize)
+    if(nStart < nArraySize)
     {
-        DelayCommand(fDelayLength * j, _UpdateStoredTemplateInfo(oShifter, nShifterType, i, min(i+nChunkSize, nArraySize)));
-        i+=nChunkSize;
-        j++;
+        int nEnd = min(nStart + CHUNK_SIZE, nArraySize);
+        _UpdateStoredTemplateInfo(oShifter, nShifterType, nStart, nEnd);
+        if(nEnd < nArraySize)
+            DelayCommand(0.0f, UpdateStoredTemplateInfo(oShifter, nShifterType, nEnd));
     }
 }
 
@@ -2369,8 +2406,9 @@ void SetStoredTemplateDeleteMark(object oShifter, int nShifterType, int nIndex, 
     persistant_array_set_string(oShifter, sNamesArray, nIndex, sName);
 }
 
-void DeleteMarkedStoredTemplates(object oShifter, int nShifterType)
+void DeleteMarkedStoredTemplates(object oShifter, int nShifterType, int nSrc=0, int nDst=0)
 {
+    const int CHUNK_SIZE = 25;
     int nDeletedPrefixLen = GetStringLength(SHIFTER_DELETED_SHAPE_PREFIX);
     string sResRefsArray = SHIFTER_RESREFS_ARRAY + IntToString(nShifterType);
     string sNamesArray = SHIFTER_NAMES_ARRAY   + IntToString(nShifterType);
@@ -2384,9 +2422,9 @@ void DeleteMarkedStoredTemplates(object oShifter, int nShifterType)
     int nRacialTypeArrayExists = persistant_array_exists(oShifter, sRacialTypeArray);
 
     // Move array entries, skipping the marked ones
-    int nSrc = 0, nDst = 0, nArraySize = persistant_array_get_size(oShifter, sResRefsArray);
+    int nCount = 0, nArraySize = persistant_array_get_size(oShifter, sResRefsArray);
     string sName, sResRef, sRace;
-    while(nSrc < nArraySize)
+    while(nSrc < nArraySize && nCount++ < CHUNK_SIZE)
     {
         sName = persistant_array_get_string(oShifter, sNamesArray, nSrc);
         if (GetStringLeft(sName, nDeletedPrefixLen) != SHIFTER_DELETED_SHAPE_PREFIX)
@@ -2410,12 +2448,17 @@ void DeleteMarkedStoredTemplates(object oShifter, int nShifterType)
         }
         nSrc++;
     }
-
-    // Shrink the arrays
-    persistant_array_shrink(oShifter, sResRefsArray, nDst);
-    persistant_array_shrink(oShifter, sNamesArray, nDst);
-    if(nRacialTypeArrayExists)
-        persistant_array_shrink(oShifter, sRacialTypeArray, nDst);
+    
+    if (nSrc < nArraySize)
+        DelayCommand(0.0f, DeleteMarkedStoredTemplates(oShifter, nShifterType, nSrc, nDst));
+    else
+    {
+        // Shrink the arrays
+        persistant_array_shrink(oShifter, sResRefsArray, nDst);
+        persistant_array_shrink(oShifter, sNamesArray, nDst);
+        if(nRacialTypeArrayExists)
+            persistant_array_shrink(oShifter, sRacialTypeArray, nDst);
+    }
 }
 
 
@@ -2533,6 +2576,7 @@ string FindResRefFromString(object oShifter, int nShifterType, string sFindStrin
         }
         else
         {
+            //TODO: multi-word prefix matches
             nFind = FindSubString(sLowerName, sFindString);
             if(nFind == 0)
             {

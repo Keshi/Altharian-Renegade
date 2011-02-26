@@ -499,14 +499,56 @@ void ApplyBreath(struct breath BreathUsed, location lTargetArea, int bLinger = F
     //roll damage
     switch(BreathUsed.nDiceType)
     {
-    	case 4: 
-    	    nDamage = d4(BreathUsed.nDiceNumber); break;
-    	case 6: 
-    	    nDamage = d6(BreathUsed.nDiceNumber); break;
-    	case 8: 
-    	    nDamage = d8(BreathUsed.nDiceNumber); break;
-    	case 10: 
-    	    nDamage = d10(BreathUsed.nDiceNumber); break;
+    	case 4:
+            nDamage = d4(BreathUsed.nDiceNumber); break;
+        case 6:
+            nDamage = d6(BreathUsed.nDiceNumber); break;
+        case 8:
+            nDamage = d8(BreathUsed.nDiceNumber); break;
+        case 10:
+            nDamage = d10(BreathUsed.nDiceNumber); break;
+        case 20:
+            nDamage = d20(BreathUsed.nDiceNumber); break;
+        case 200:
+            nDamage = 200; break;
+        case 300:
+            nDamage = 300; break;
+        case 400:
+            nDamage = 400; break;
+        case 500:
+            nDamage = 500; break;
+        case 600:
+            nDamage = 600; break;
+        case 700:
+            nDamage = 700; break;
+        case 800:
+            nDamage = 800; break;
+        case 900:
+            nDamage = 900; break;
+        case 1000:
+            nDamage = 1000; break;
+        case 1100:
+            nDamage = 1100; break;
+        case 1200:
+            nDamage = 1200; break;
+        case 1300:
+            nDamage = 1300; break;
+        case 1400:
+            nDamage = 1400; break;
+        case 1500:
+            nDamage = 1500; break;
+        case 1600:
+            nDamage = 1600; break;
+        case 1700:
+            nDamage = 1700; break;
+        case 1800:
+            nDamage = 1800; break;
+        case 1900:
+            nDamage = 1900; break;
+        case 2000:
+            nDamage = 2000; break;
+
+
     }
     if(DEBUG) DoDebug("prc_inc_breath: Rolling damage: " + IntToString(BreathUsed.nDiceNumber) 
                       + "d" + IntToString(BreathUsed.nDiceType) + "= " + IntToString(nDamage));
@@ -756,9 +798,10 @@ void ApplyBreath(struct breath BreathUsed, location lTargetArea, int bLinger = F
             //Swift Wing Breath of Life - Positive to Undead only, heals living creatures
             else if(BreathUsed.nOverrideSpecial == BREATH_SWIFT_WING)
             {
-            	if(MyPRCGetRacialType(oTarget) == RACIAL_TYPE_UNDEAD)
-            	{
-            	    //Fire cast spell at event for the specified target
+                if(MyPRCGetRacialType(oTarget) == RACIAL_TYPE_UNDEAD
+                || (GetHasFeat(FEAT_TOMB_TAINTED_SOUL, oTarget) && GetAlignmentGoodEvil(oTarget) != ALIGNMENT_GOOD))
+                {
+                    //Fire cast spell at event for the specified target
                     SignalEvent(oTarget, EventSpellCastAt(BreathUsed.oDragon, GetSpellId()));
                     
     		    nAdjustedDamage = PRCGetReflexAdjustedDamage(nDamage, oTarget, nSaveDC, SAVING_THROW_TYPE_POSITIVE);
@@ -857,7 +900,8 @@ void ApplyBreath(struct breath BreathUsed, location lTargetArea, int bLinger = F
 	//Breath of Life healing
 	if(oTarget != BreathUsed.oDragon && BreathUsed.nOverrideSpecial == BREATH_SWIFT_WING
 	   && MyPRCGetRacialType(oTarget) != RACIAL_TYPE_UNDEAD
-	   && MyPRCGetRacialType(oTarget) != RACIAL_TYPE_CONSTRUCT)
+	   && MyPRCGetRacialType(oTarget) != RACIAL_TYPE_CONSTRUCT
+	   && !(GetHasFeat(FEAT_TOMB_TAINTED_SOUL, oTarget) && GetAlignmentGoodEvil(oTarget) != ALIGNMENT_GOOD))
 	{
 	    //Fire cast spell at event for the specified target
             SignalEvent(oTarget, EventSpellCastAt(BreathUsed.oDragon, GetSpellId(), FALSE));

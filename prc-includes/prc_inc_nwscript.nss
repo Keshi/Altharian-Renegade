@@ -60,7 +60,7 @@ int PRCGetCreatureSize(object oObject = OBJECT_SELF, int nSizeMask = PRC_SIZEMAS
 
 // This line is here to prevent the bioware toolkit from
 // throwing an exception over the number of constants in PRC
-const int BIOWARE_INHIBIT = !!0;
+const int BIOWARE_INHIBIT = 0;
 
 #include "prc_misc_const"
 #include "psi_power_const"

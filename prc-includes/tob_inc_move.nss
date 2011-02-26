@@ -66,7 +66,7 @@ struct maneuver{
  *                      the maneuver was successfully initiated and some other
  *                      commonly used data, like the PC's initiator level for this maneuver.
  */
-struct maneuver EvaluateManeuver(object oInitiator, object oTarget, int bTOBAbility = FALSE);
+struct maneuver EvaluateManeuver(object oInitiator, object oTarget = OBJECT_INVALID, int bTOBAbility = FALSE);
 
 /**
  * Causes OBJECT_SELF to use the given maneuver.
@@ -442,7 +442,7 @@ void _StanceSpecificChecks(object oInitiator, int nMoveId)
 /*             Function definitions             */
 //////////////////////////////////////////////////
 
-struct maneuver EvaluateManeuver(object oInitiator, object oTarget, int bTOBAbility = FALSE)
+struct maneuver EvaluateManeuver(object oInitiator, object oTarget = OBJECT_INVALID, int bTOBAbility = FALSE)
 {
     /* Get some data */
     // initiator-related stuff

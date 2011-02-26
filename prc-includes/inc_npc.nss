@@ -86,11 +86,11 @@ object CreateLocalNPC(object oMaster,int nAssociateType,string sTemplate,locatio
      SetAssociateState(NW_ASC_DISTANCE_4_METERS, FALSE);
      SetAssociateState(NW_ASC_DISTANCE_6_METERS, FALSE);
 
-     if (nAssociateType ==ASSOCIATE_TYPE_FAMILIAR) SetLocalInt(oMaster, "FamiliarToTheDeath", 100);
-     if (nAssociateType ==ASSOCIATE_TYPE_ANIMALCOMPANION) SetLocalInt(oMaster, "AniCompToTheDeath", 100);
+     if (nAssociateType == ASSOCIATE_TYPE_FAMILIAR) SetLocalInt(oMaster, "FamiliarToTheDeath", 100);
+     if (nAssociateType == ASSOCIATE_TYPE_ANIMALCOMPANION) SetLocalInt(oMaster, "AniCompToTheDeath", 100);
 
-     effect eVis = EffectVisualEffect(VFX_IMP_UNSUMMON);
-     ApplyEffectAtLocation(DURATION_TYPE_TEMPORARY, eVis, GetLocation(oSummon));
+     effect eVis = EffectVisualEffect(VFX_FNF_SUMMON_UNDEAD);
+     ApplyEffectAtLocation(DURATION_TYPE_INSTANT, eVis, GetLocation(oSummon));
 
      return oSummon;
 }

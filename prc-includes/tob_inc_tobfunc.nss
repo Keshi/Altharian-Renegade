@@ -1151,8 +1151,9 @@ void DoDesertWindBoost(object oPC)
         // Add eventhook to the item
         AddEventScript(oItem, EVENT_ITEM_ONHIT, "tob_dw_onhit", TRUE, FALSE);
         DelayCommand(6.0, RemoveEventScript(oItem, EVENT_ITEM_ONHIT, "tob_dw_onhit", TRUE, FALSE));
-        // Add the OnHit
+        // Add the OnHit and vfx
         IPSafeAddItemProperty(oItem, ItemPropertyOnHitCastSpell(IP_CONST_ONHIT_CASTSPELL_ONHIT_UNIQUEPOWER, 1), 6.0, X2_IP_ADDPROP_POLICY_KEEP_EXISTING, FALSE, FALSE);
+        IPSafeAddItemProperty(oItem, ItemPropertyVisualEffect(ITEM_VISUAL_FIRE), 6.0, X2_IP_ADDPROP_POLICY_KEEP_EXISTING, FALSE, FALSE);
         SetLocalInt(oPC, "DesertWindBoost", PRCGetSpellId());
         DelayCommand(6.0, DeleteLocalInt(oPC, "DesertWindBoost"));
 }
@@ -1210,12 +1211,18 @@ int GetHasDefensiveStance(object oInitiator, int nDiscipline)
 {
         // Because this is only called from inside the proper stances
         // Its just a check to see if they should link in the save boost.
-        if      (GetHasFeat(FEAT_SS_DF_DS_DW, oInitiator) && nDiscipline == DISCIPLINE_DESERT_WIND)  return TRUE;
-        else if (GetHasFeat(FEAT_SS_DF_DS_DM, oInitiator) && nDiscipline == DISCIPLINE_DIAMOND_MIND) return TRUE;
-        else if (GetHasFeat(FEAT_SS_DF_DS_SS, oInitiator) && nDiscipline == DISCIPLINE_SETTING_SUN)  return TRUE;
-        else if (GetHasFeat(FEAT_SS_DF_DS_SH, oInitiator) && nDiscipline == DISCIPLINE_SHADOW_HAND)  return TRUE;
-        else if (GetHasFeat(FEAT_SS_DF_DS_SD, oInitiator) && nDiscipline == DISCIPLINE_STONE_DRAGON) return TRUE;
-        else if (GetHasFeat(FEAT_SS_DF_DS_TC, oInitiator) && nDiscipline == DISCIPLINE_TIGER_CLAW)   return TRUE;
+        int nFeat;
+        switch(nDiscipline)
+        {
+            case DISCIPLINE_DESERT_WIND:  nFeat = FEAT_SS_DF_DS_DW; break;
+            case DISCIPLINE_DIAMOND_MIND: nFeat = FEAT_SS_DF_DS_DM; break;
+            case DISCIPLINE_SETTING_SUN:  nFeat = FEAT_SS_DF_DS_SS; break;
+            case DISCIPLINE_SHADOW_HAND:  nFeat = FEAT_SS_DF_DS_SH; break;
+            case DISCIPLINE_STONE_DRAGON: nFeat = FEAT_SS_DF_DS_SD; break;
+            case DISCIPLINE_TIGER_CLAW:   nFeat = FEAT_SS_DF_DS_TC; break;
+        }
+        if(GetHasFeat(nFeat, oInitiator))
+            return TRUE;
 
         return FALSE;
 }
@@ -1248,30 +1255,21 @@ int TOBGetHasDiscipline(object oInitiator, int nDiscipline)
 
 int TOBGetHasDisciplineFocus(object oInitiator, int nDiscipline)
 {
-	// Set one of the Discipline Focus feats
-        if      (GetHasFeat(FEAT_SS_DF_DS_DW, oInitiator) && nDiscipline == DISCIPLINE_DESERT_WIND)  return TRUE;
-        else if (GetHasFeat(FEAT_SS_DF_DS_DM, oInitiator) && nDiscipline == DISCIPLINE_DIAMOND_MIND) return TRUE;
-        else if (GetHasFeat(FEAT_SS_DF_DS_SS, oInitiator) && nDiscipline == DISCIPLINE_SETTING_SUN)  return TRUE;
-        else if (GetHasFeat(FEAT_SS_DF_DS_SH, oInitiator) && nDiscipline == DISCIPLINE_SHADOW_HAND)  return TRUE;
-        else if (GetHasFeat(FEAT_SS_DF_DS_SD, oInitiator) && nDiscipline == DISCIPLINE_STONE_DRAGON) return TRUE;
-        else if (GetHasFeat(FEAT_SS_DF_DS_TC, oInitiator) && nDiscipline == DISCIPLINE_TIGER_CLAW)   return TRUE;
-        // Set two of the Discipline Focus feats
-        if      (GetHasFeat(FEAT_SS_DF_IS_DW, oInitiator) && nDiscipline == DISCIPLINE_DESERT_WIND)  return TRUE;
-        else if (GetHasFeat(FEAT_SS_DF_IS_DM, oInitiator) && nDiscipline == DISCIPLINE_DIAMOND_MIND) return TRUE;
-        else if (GetHasFeat(FEAT_SS_DF_IS_SS, oInitiator) && nDiscipline == DISCIPLINE_SETTING_SUN)  return TRUE;
-        else if (GetHasFeat(FEAT_SS_DF_IS_SH, oInitiator) && nDiscipline == DISCIPLINE_SHADOW_HAND)  return TRUE;
-        else if (GetHasFeat(FEAT_SS_DF_IS_SD, oInitiator) && nDiscipline == DISCIPLINE_STONE_DRAGON) return TRUE;
-        else if (GetHasFeat(FEAT_SS_DF_IS_TC, oInitiator) && nDiscipline == DISCIPLINE_TIGER_CLAW)   return TRUE;
-        // Set three of the Discipline Focus feats
-        if      (GetHasFeat(FEAT_SS_DF_WF_DW, oInitiator) && nDiscipline == DISCIPLINE_DESERT_WIND)  return TRUE;
-        else if (GetHasFeat(FEAT_SS_DF_WF_DM, oInitiator) && nDiscipline == DISCIPLINE_DIAMOND_MIND) return TRUE;
-        else if (GetHasFeat(FEAT_SS_DF_WF_SS, oInitiator) && nDiscipline == DISCIPLINE_SETTING_SUN)  return TRUE;
-        else if (GetHasFeat(FEAT_SS_DF_WF_SH, oInitiator) && nDiscipline == DISCIPLINE_SHADOW_HAND)  return TRUE;
-        else if (GetHasFeat(FEAT_SS_DF_WF_SD, oInitiator) && nDiscipline == DISCIPLINE_STONE_DRAGON) return TRUE;
-        else if (GetHasFeat(FEAT_SS_DF_WF_TC, oInitiator) && nDiscipline == DISCIPLINE_TIGER_CLAW)   return TRUE;
+    int nFeat1, nFeat2, nFeat3;
+    switch(nDiscipline)
+    {
+        case DISCIPLINE_DESERT_WIND:  nFeat1 = FEAT_SS_DF_DS_DW; nFeat2 = FEAT_SS_DF_IS_DW; nFeat3 = FEAT_SS_DF_WF_DW; break;
+        case DISCIPLINE_DIAMOND_MIND: nFeat1 = FEAT_SS_DF_DS_DM; nFeat2 = FEAT_SS_DF_IS_DM; nFeat3 = FEAT_SS_DF_WF_DM; break;
+        case DISCIPLINE_SETTING_SUN:  nFeat1 = FEAT_SS_DF_DS_SS; nFeat2 = FEAT_SS_DF_IS_SS; nFeat3 = FEAT_SS_DF_WF_SS; break;
+        case DISCIPLINE_SHADOW_HAND:  nFeat1 = FEAT_SS_DF_DS_SH; nFeat2 = FEAT_SS_DF_IS_SH; nFeat3 = FEAT_SS_DF_WF_SH; break;
+        case DISCIPLINE_STONE_DRAGON: nFeat1 = FEAT_SS_DF_DS_SD; nFeat2 = FEAT_SS_DF_IS_SD; nFeat3 = FEAT_SS_DF_WF_SD; break;
+        case DISCIPLINE_TIGER_CLAW:   nFeat1 = FEAT_SS_DF_DS_TC; nFeat2 = FEAT_SS_DF_IS_TC; nFeat3 = FEAT_SS_DF_WF_TC; break;
+    }
+    if(GetHasFeat(nFeat1, oInitiator) || GetHasFeat(nFeat2, oInitiator) || GetHasFeat(nFeat3, oInitiator))
+        return TRUE;
 
-	// If none of those trigger.
-	return FALSE;
+    // If none of those trigger.
+    return FALSE;
 }
 
 int GetIsDisciplineWeapon(object oWeapon, int nDiscipline)

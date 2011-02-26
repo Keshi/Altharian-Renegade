@@ -325,7 +325,7 @@ int GetIsEpicShaman(object oPC)
 
 int GetIsEpicWitch(object oPC)
 {
-    if (GetPrCAdjustedCasterLevel(CLASS_TYPE_WITCH, oPC, FALSE) >= 17 && GetHitDice(oPC) >= 21 &&
+    if (GetPrCAdjustedCasterLevel(CLASS_TYPE_WITCH, oPC, FALSE) >= 18 && GetHitDice(oPC) >= 21 &&
         GetAbilityScore(oPC, ABILITY_WISDOM) >= 19)
             return TRUE;
     return FALSE;
@@ -347,6 +347,14 @@ int GetIsEpicSublimeChord(object oPC)
     return FALSE;
 }
 
+int GetIsEpicTemplar(object oPC)
+{
+    if (GetLevelByClass(CLASS_TYPE_TEMPLAR, oPC) >= 18 && GetHitDice(oPC) >= 21 &&
+        GetAbilityScore(oPC, ABILITY_CHARISMA) >= 19)
+            return TRUE;
+    return FALSE;
+}
+
 int GetIsEpicArchivist(object oPC)
 {
     if (GetPrCAdjustedCasterLevel(CLASS_TYPE_ARCHIVIST, oPC, FALSE) >= 17 && GetHitDice(oPC) >= 21 &&
@@ -360,7 +368,7 @@ int GetIsEpicSpellcaster(object oPC)
     if (GetIsEpicCleric(oPC) || GetIsEpicDruid(oPC) || GetIsEpicDreadNecromancer(oPC) ||
         GetIsEpicSorcerer(oPC) || GetIsEpicWizard(oPC) || GetIsEpicMystic(oPC) || GetIsEpicWitch(oPC) ||
         GetIsEpicWarmage(oPC) || GetIsEpicHealer(oPC) || GetIsEpicFavSoul(oPC) || GetIsEpicShaman(oPC) ||
-        GetIsEpicSublimeChord(oPC) || GetIsEpicArchivist(oPC) || GetIsEpicBeguiler(oPC))
+        GetIsEpicSublimeChord(oPC) || GetIsEpicArchivist(oPC) || GetIsEpicBeguiler(oPC) || GetIsEpicTemplar(oPC))
         return TRUE;
     return FALSE;
 }
@@ -827,19 +835,22 @@ int GetEpicSpellSaveDC(object oCaster = OBJECT_SELF, object oTarget = OBJECT_INV
     int iWit = GetPrCAdjustedCasterLevel(CLASS_TYPE_WITCH,    oCaster); // wis determines DC
     int iArc = GetPrCAdjustedCasterLevel(CLASS_TYPE_ARCHIVIST, oCaster); // int determines DC
     int iBeg = GetPrCAdjustedCasterLevel(CLASS_TYPE_BEGUILER, oCaster); // int determines DC
+    int iTpl = GetPrCAdjustedCasterLevel(CLASS_TYPE_TEMPLAR,  oCaster); // cha determines DC
+
     int iBest = 0;
     int iAbility;
     if(nSpellID == -1)
         nSpellID = PRCGetSpellId();
 
-    if (iDiv > iBest) { iAbility = ABILITY_WISDOM;       iBest = iDiv; }
+    if (iArc > iBest) { iAbility = ABILITY_INTELLIGENCE; iBest = iWit; }
+    if (iTpl > iBest) { iAbility = ABILITY_CHARISMA;     iBest = iTpl; }
     if (iWiz > iBest) { iAbility = ABILITY_INTELLIGENCE; iBest = iWiz; }
     if (iWMa > iBest) { iAbility = ABILITY_CHARISMA;     iBest = iWMa; }
     if (iDNc > iBest) { iAbility = ABILITY_CHARISMA;     iBest = iDNc; }
     if (iSor > iBest) { iAbility = ABILITY_CHARISMA;     iBest = iSor; }
-    if (iWit > iBest) { iAbility = ABILITY_CHARISMA;     iBest = iWit; }
-    if (iArc > iBest) { iAbility = ABILITY_INTELLIGENCE; iBest = iWit; }
-    if (iBeg > iBest) { iAbility = ABILITY_INTELLIGENCE; iBest = iWit; }
+    if (iWit > iBest) { iAbility = ABILITY_WISDOM;       iBest = iWit; }
+    if (iBeg > iBest) { iAbility = ABILITY_INTELLIGENCE; iBest = iBeg; }
+    if (iDiv > iBest) { iAbility = ABILITY_WISDOM;       iBest = iDiv; }
 
     int nDC;
     if (iBest)   nDC =  20 + GetAbilityModifier(iAbility, oCaster);
